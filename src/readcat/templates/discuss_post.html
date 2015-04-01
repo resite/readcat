@@ -1,0 +1,63 @@
+<?php include 'header.html'?>
+<div id="container">
+    <div class="well">
+
+
+
+
+<form action="" method="post">
+    <div class="alert alert-info">
+        发起一个讨论
+    </div>
+    <div class="form-horizontal">
+        
+        <div class="form-group">
+            <label class="control-label col-md-2" for="Title">标题</label>
+            <div class="col-md-9">
+                <textarea Value="subverse: submit" class="form-control" cols="20" data-val="true" data-val-length="太长或太短" data-val-length-max="200" data-val-required="请填写标题" id="Title" name="title" rows="2">
+</textarea>
+                <span class="field-validation-valid" data-valmsg-for="Title" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="Subverse">节点</label>
+            <div class="col-md-4">
+                <input Value="" class="form-control" data-val="true" data-val-length="字太多" data-val-length-max="200" data-val-required="节点一定要填写" id="Subverse" name="node_keyword" placeholder="" type="text" value="" />
+                <span class="field-validation-valid" data-valmsg-for="Subverse" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="Message__optional_">内容 (可选)</label>
+            <div class="col-md-9">
+                
+<textarea Value="" class="form-control" cols="20" data-val="true" data-val-length="字太多" data-val-length-max="10000" id="MessageContent" name="content" rows="5">
+</textarea>
+                <span class="field-validation-valid" data-valmsg-for="MessageContent" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="captcha">验证码</label>
+            <div class="col-md-4">
+                <input Value="" class="form-control" data-val="true" data-val-required="请填写验证码" id="Subverse" name="captcha" placeholder="" type="text" value="" />
+                <img src="/index.php?view=index&entry=captcha" alt="captcha"/>
+                <span class="field-validation-valid" data-valmsg-for="captcha" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="提交" class="btn-whoaverse" />
+            </div>
+        </div>
+
+
+    </div>
+</form>
+    </div>
+</div>
+
+    
+<?php include 'footer.html'?>

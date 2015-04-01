@@ -1,0 +1,39 @@
+<?php include "header.html";?>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+        <?php include "submenu.html";?>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div class="header">
+            <h3 class="text-muted">用户列表</h3>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                	<tr>
+                        <th>#</th>
+                		<th>昵称</th>
+                		<th>手机</th>
+                        <th>类型</th>
+                		<th></th>
+                	</tr>
+                </thead>
+                <tbody>
+                    <?php foreach($user_list as $val){ ?>
+                	<tr>
+                        <td><?php echo $val['user_id'];?></td>
+                		<td><?php echo $val['nickname'];?></td>
+                		<td><?php echo $val['mob_phone'];?></td>
+                        <td><?php echo user::user_type($val['type_id']);?></td>
+                		<td><a href="/admin/index.php?view=admin&entry=user_edit&user_id=<?php echo $val['user_id'];?>"></a>编辑</td>
+                	</tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+            <?php include "page.html";?>
+        </div>
+        </div>
+    </div>
+</div>
+<?php include "footer.html";?>

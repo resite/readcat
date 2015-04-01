@@ -1,0 +1,29 @@
+<?php include "header.html";?>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+        <?php include "submenu.html";?>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div class="header">
+            <h3 class="text-muted">系统信息</h3>
+        </div>
+        <form class="form" method="post" action="">
+            <div class="form-group">
+                <label for="sys_config_id">ID</label>
+                <input type="text" class="form-control" id="sys_config_id" name="sys_config_id" value="<?php echo $sys_config['sys_config_id'];?>" />
+            </div>
+            <div class="form-group">
+                <label for="v">值</label>
+                <input type="text" class="form-control" id="v" name="v" value="<?php echo $sys_config['v'];?>" />
+            </div>
+            <div class="form-group">
+                <label for="sys_config_desc">描述</label>
+                <input type="text" class="form-control" id="sys_config_desc" name="sys_config_desc" value="<?php echo $sys_config['sys_config_desc'];?>" />
+            </div>
+            <button class="btn btn-default" type="submit">提交</button>
+        </form>
+        </div>
+    </div>
+</div>
+<?php include "footer.html";?>

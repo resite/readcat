@@ -1,0 +1,57 @@
+
+<div class="side">
+    <?php if($_GET['node_id']){?>
+    <div class="spacer">
+        <div class="titlebox">
+            <h1 class="hover whoaversename">
+                <a href="index.php?view=feed&entry=feed_list&node_id=<?php echo $node['node_id']?>" class="hover"><?php echo $node['keywords']?></a>
+            </h1>
+
+            <?php echo html::subscribe_button($this->user_id,$node['node_id'])?>
+
+            <p class="users-online fuzzed">
+                <span class="word"><?php echo $node['intro']?></span>
+            </p>
+            <div class="clear"></div>
+        </div>
+    </div>
+    <?php }?>
+    
+    <div class="spacer">
+        <a href="index.php?view=feed&entry=post&linkpost=true" class="btn-whoaverse btn-block contribute">
+            发布链接
+        </a>
+    </div>
+
+    <div class="spacer">
+        <a href="index.php?view=feed&entry=post" class="btn-whoaverse btn-block contribute">
+            发布讨论
+        </a>
+    </div>
+    
+    <?php if($indirect_node_list){?>
+    <div class="usertext-body may-blank-within">
+        <div class="md">
+            <p></p><h1>推荐节点</h1>
+            <?php foreach($indirect_node_list as $v){?>
+            <p><a href="/index.php?view=feed&node_id=<?php echo $v['node_id']?>"><?php echo $v['keywords']?></a></p>
+            <?php }?>
+            <p></p>
+        </div>
+    </div>
+    <?php }?>
+    
+    <div class="spacer spacersection">
+        <div class="alert-h1">
+            24小时获赞最多
+        </div>
+        <div>
+
+        <?php foreach($top_feed_list as $v){?>
+        <span><?php echo $v['ups']?><a href="index.php?view=feed&entry=feed_view&feed_id=<?php echo $v['feed_id']?>" tabindex="1" title="<?php echo $v['title']?>"><?php echo $v['title']?></a></span>
+        <div class="tagline">&nbsp;</div>
+        <?php }?>
+
+        </div>
+    </div>
+</div>

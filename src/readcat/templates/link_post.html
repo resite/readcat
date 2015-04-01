@@ -1,0 +1,62 @@
+<?php include 'header.html'?>
+<div id="container">
+    <div class="well">
+
+
+
+
+<form action="" method="post">
+    <div class="panel panel-default">
+        <div class="panel-heading">分享一个有意思的网页或图片</div>
+        <div class="panel-body">
+            <p>图片请上传到<a href="http://photo.weibo.com/photos/upload" target="_blank">微博相册</a>，在网址框里粘帖图片地址即可发图</p>
+            <p>原创图请注明来源。</p>
+            <p>发布后请等待审核，未通过的原因可能是重复网页/图、敏感/图或带明显广告</p>
+        </div>
+    </div>
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label class="control-label col-md-2" for="URL">网址</label>
+            <div class="col-md-9">
+                <input Value="" class="form-control" data-val="true" data-val-required="请填写" data-val-url="请以http开头" placeholder="http://" id="MessageContent" name="url" type="text" value="" />
+                <a href="javascript:void(0)" id="suggest-title" onclick="return suggestTitle()">获取标题</a>
+                <span class="field-validation-valid" data-valmsg-for="MessageContent" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="Title">标题</label>
+            <div class="col-md-9">
+                <input Value="" class="form-control" data-val="true" data-val-length="标题太长或太短" data-val-length-max="200" data-val-length-min="3" data-val-required="请填写标题" id="Linkdescription" name="title" type="text" value="" />
+                <span class="field-validation-valid" data-valmsg-for="Linkdescription" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="Subverse">节点</label>
+            <div class="col-md-4">
+                <input Value="" class="form-control" data-val="true" data-val-required="节点一定要填写" id="Subverse" name="node_keyword" placeholder="" type="text" value="" />
+                <span class="field-validation-valid" data-valmsg-for="Subverse" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label class="control-label col-md-2" for="captcha">验证码</label>
+            <div class="col-md-4">
+                <input Value="" class="form-control" data-val="true" data-val-required="请填写验证码" id="Subverse" name="captcha" placeholder="" type="text" value="" />
+                <img src="/index.php?view=index&entry=captcha" alt="captcha"/>
+                <span class="field-validation-valid" data-valmsg-for="captcha" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="提交" class="btn-whoaverse" />
+            </div>
+        </div>
+    </div>
+</form>    </div>
+</div>
+
+    
+<?php include 'footer.html'?>

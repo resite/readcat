@@ -1,0 +1,13 @@
+<?php if($page['total']>1){ ?>
+<ul class="pagination">
+    <?php if($page['pre']){?><li class=""><a href="<?php echo $page['get'].'page='.$page['pre'];?>">&laquo;</a></li><?php } ?>
+    <?php foreach($page['pages'] as $v){ ?>
+    <?php if($v == $page['page']){ ?>
+    <li class="active disabled"><a href="#"><?php echo $v;?></a></li>
+    <?php }else{ ?>
+    <li class=""><a href="<?php echo $page['get'].'page='.$v;?>"><?php echo $v;?></a></li>
+    <?php } ?>
+    <?php }?>
+    <?php if($page['next']){?><li><a href="<?php echo $page['get'].'page='.$page['next'];?>">&raquo;</a></li><?php } ?>
+</ul>
+<?php } ?>

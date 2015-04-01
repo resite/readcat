@@ -1,0 +1,133 @@
+<div class="<?php echo $comment['parent_id']==0?'thread':'child'?> commentid-<?php echo $comment['comment_id']?> comment " data-fullname="" data-ups="" data-downs="">
+                        
+
+
+
+
+<!-- 1 submission comment -->
+<p class="parent">
+    <a></a>
+</p>
+
+
+
+        <div class="midcol <?php echo html::comment_vote_class($user_id,$feed_id,$comment['comment_id'])?>" style="">
+            <div class="<?php echo html::comment_vote_class($user_id,$feed_id,$comment['comment_id'],'arrow-upvote','arrow-upvoted','arrow-upvote')?> login-required" onclick="<?php echo $user_id? "voteUpComment({$comment['comment_id']});":"mustLogin();"?>" role="button" aria-label="upvote" tabindex="0"></div>
+
+            <div class="<?php echo html::comment_vote_class($user_id,$feed_id,$comment['comment_id'],'arrow-downvote','arrow-downvoted','arrow-downvoted')?> login-required" onclick="<?php echo $user_id? "voteDownComment({$comment['comment_id']});":"mustLogin();"?>" role="button" aria-label="downvote" tabindex="0"></div>
+
+        </div>
+
+<div class="entry unvoted">
+
+    <div class="collapsed" <?php if($comment['enabled'] && $comment['downs']<=feed::COMMENT_DOWNS_CEILING){?>style="display:none"<?php }?>>
+        <a href="#" class="expand" onclick="return showcomment(<?php echo $comment['comment_id']?>)">[+]</a>
+                <a href="#" class="author gray may-blank"><?php html::nickname($comment['user_id'])?></a>
+            <span class="userattrs"></span>
+            <span class="score dislikes"><?php echo $comment['downs']?>分</span>
+            <span class="score onlycollapsed"><?php echo $comment['ups']?>分</span>
+            <span class="score likes"><?php echo $comment['ups']?>分</span>
+        <time title="<?php echo html::date_relative($comment['add_time'])?>" ><?php echo html::date_relative($comment['add_time'])?></time>&nbsp;
+        &nbsp;<a href="#" class="expand" style="" onclick="return showcomment(<?php echo $comment['comment_id']?>)">(展开)</a>
+    </div>
+
+    <div class="noncollapsed" id="<?php echo $comment['comment_id']?>" <?php if(!$comment['enabled'] || $comment['downs']>feed::COMMENT_DOWNS_CEILING){?>style="display:none"<?php }?>>
+        <div class="tagline">
+            <a href="#" class="expand" onclick="return hidecomment(<?php echo $comment['comment_id']?>)">[–]</a>
+
+
+
+
+
+
+    <a href="#" class="author may-blank"><?php html::nickname($comment['user_id'])?></a>
+<span class="userattrs"></span>                <span class="score dislikes"><?php echo $comment['downs']?></span>
+                <span class="score unvoted"><?php echo $comment['ups']?>分</span>
+                <span class="score likes"><?php echo $comment['ups']?>分</span>
+                <span class="commentvotesratio">(<span class="post_upvotes">+<?php echo $comment['ups']?></span>|<span class="post_downvotes">-<?php echo $comment['downs']?></span>)</span>
+
+            <time title="<?php echo html::date_relative($comment['add_time'])?>"><?php echo html::date_relative($comment['add_time'])?></time>&nbsp;
+            
+            
+            <ul class="flat-list buttons" style="display:none">
+                        <li class="first">
+                            <a class="" href="javascript:void(0)" onclick="<?php echo $user_id ? "return reply({$comment['comment_id']},{$feed_id})" : "mustLogin();"?>">回复</a>
+                        </li>
+
+
+
+
+            <li>
+                <form class="toggle report-button active" action="#" method="get">
+                    <input class="active" name="executed" value="reported" type="hidden">
+                    <span class="option main active">
+                        <a href="javascript:void(0)" class="togglebutton" onclick="<?php echo $user_id ? "return toggle(this, {$comment['comment_id']})" : "mustLogin();"?>">举报</a>
+                    </span>
+                    <span class="option error">
+                        确定举报？  <a href="javascript:void(0)" class="yes" onclick="reportcomment(this, <?php echo $comment['comment_id']?>)">是的</a> / <a href="javascript:void(0)" class="no" onclick="return toggleback(this)">算了</a>
+                    </span>
+                </form>
+            </li>
+
+            </ul>
+
+        </div>
+
+            <div class="usertext-body may-blank-within" id="commentContent-<?php echo $comment['comment_id']?>">
+                <div class="md">
+                    <p><?php echo (!$comment['enabled'] || $comment['downs']>feed::COMMENT_DOWNS_CEILING) ? '因被踩过多不被显示':$comment['content']?></p>
+
+                </div>
+            </div>
+
+
+
+
+
+    
+
+<div id="replyform-<?php echo $comment['comment_id']?>" style="display:none">
+
+    <form id="commentreplyform-<?php echo $comment['comment_id']?>" novalidate="novalidate" action="index.php?view=feed&entry=post_comment" method="post">
+
+        
+
+        <input id="ParentId" name="parent_id" value="<?php echo $comment['comment_id']?>" type="hidden">
+        <input id="MessageId" name="feed_id" value="<?php echo $feed_id?>" type="hidden">
+
+        <div class="row">
+            <div class="pmreplyform col-md-5">
+                
+
+
+                <textarea class="commenttextarea" cols="20" id="CommentContent" name="content" data-val="true" data-val-length="字数太多或太少" data-val-length-max="10000" data-val-required="请填写内容" rows="3"></textarea>
+                <span class="field-validation-valid" data-valmsg-for="CommentContent" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+
+        <div>
+            <span class="field-validation-error" data-valmsg-for="Title" data-valmsg-replace="true">
+                <span class="" id="errorMessage" style="display: none">请输入评论</span>
+            </span>
+        </div>
+
+        <input id="submitbutton" value="回复" class="btn-whoaverse-paging" onclick="postCommentReplyAjax(this, <?php echo $feed_id?>, '<?php echo html::nickname($user_id)?>', <?php echo $comment['comment_id']?>)" type="button">
+        <button class="btn-whoaverse-paging" onclick="removereplyform(<?php echo $comment['comment_id']?>);" type="button">取消</button>
+
+    </form>
+
+</div>
+
+
+
+
+
+
+
+
+
+</div>
+</div>
+
+<?php //child here, last '</div>' is in html::show_comments_building()?>
+

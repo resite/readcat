@@ -1,0 +1,29 @@
+<?php include "header.html";?>
+<style type="text/css">
+body {
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #eee;
+}
+</style>
+<div class="container">
+  <form class="form-signin" role="form" method="post" action="">
+    <h2 class="form-signin-heading">登录</h2>
+    <input type="email" class="form-control" placeholder="邮箱" required autofocus name="email">
+    <input type="password" class="form-control" placeholder="密码" required name="password">
+    <div class="checkbox">
+      <label>
+        <input type="checkbox" value="1"> 记住我
+      </label>
+    </div>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
+  </form>
+
+</div>
+<script src="http://cdn.bootcss.com/jquery-validate/1.12.0/jquery.validate.min.js"></script>
+<script>
+$(document).ready(function(){
+$('form').validate();
+})
+</script>
+<?php include "footer.html";?>

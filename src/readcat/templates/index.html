@@ -1,0 +1,88 @@
+<?php include 'header.html';?>
+
+<div id="container">
+<?php include "index_side.html";?>
+
+    <div class="content" role="main">
+
+        <div class="sitetable">
+            
+
+<?php foreach($feed_list as $k=>$v){ ?>
+<div class="submission id-<?php echo $v['feed_id']?> <?php echo is_even($k)?'even':'odd'?> link self" data-fullname="<?php echo $v['feed_id']?>" data-ups="1" data-downs="">
+    <p class="parent"></p>
+
+        <div class="midcol <?php echo html::feed_vote_class($this->user_id,$v['feed_id'])?>">
+            <div class="<?php echo html::feed_vote_class($this->user_id,$v['feed_id'],'arrow-upvote','arrow-upvoted','arrow-upvote')?> login-required" onclick="<?php echo $this->user_id? "voteUpSubmission({$v['feed_id']});":"mustLogin();"?>" role="button" aria-label="upvote" tabindex="0" id="upvotebutton-<?php echo $v['feed_id']?>"></div>
+            <div class="score dislikes"><?php echo $v['downs']?></div>
+            <div class="score unvoted"><?php echo $v['ups']?$v['ups']:'•'?></div>
+            <div class="score likes"><?php echo $v['ups']?></div>
+            <div class="<?php echo html::feed_vote_class($this->user_id,$v['feed_id'],'arrow-downvote','arrow-downvote','arrow-downvoted')?> login-required" onclick="<?php echo $this->user_id? "voteDownSubmission({$v['feed_id']});":"mustLogin();"?>" role="button" aria-label="downvote" tabindex="0"></div>
+        </div>
+        <div class="scorebar" title="Blue = likes, violet = dislikes">
+            <div class="scorebar-likes" style="height: 100%"></div>
+            <div class="scorebar-dislikes" style="height: 0%"></div>
+        </div>
+
+        <?php if($v['top_image']){ ?>
+        <a class="thumbnail may-blank" href="<?php echo $v['url']?$v['url']:'index.php?view=feed&entry=feed_view&feed_id='.$v['feed_id']?>" target="_blank">
+            <img src="/contents/images/thumbs/small/<?php echo $v['top_image']?>" alt="<?php echo $v['title']?>" />
+        </a>
+        <?php }?>
+
+
+        <div class="entry unvoted">
+            <p class="title">
+                <a class="title may-blank " href="<?php echo $v['url']?$v['url']:'index.php?view=feed&entry=feed_view&feed_id='.$v['feed_id']?>" tabindex="1" title="<?php echo $v['title']?>" target="_blank" ><?php echo $v['title']?></a>
+                <span class="domain">(<?php echo $v['domain']?>)</span>
+            </p>
+
+                    <p class="tagline">
+                        <time title="<?php echo html::date_relative($v['add_time'])?>"><?php echo html::date_relative($v['add_time'])?></time>
+                        <span class="userattrs"></span> by <a href="#" class="subverse hover may-blank"><?php echo html::nickname($v['user_id'])?></a>
+                    </p>
+
+            <ul class="flat-list buttons">
+                <li class="first">
+                        <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+                        <a href="index.php?view=feed&entry=feed_view&feed_id=<?php echo $v['feed_id']?>" class="comments may-blank"><?php echo html::comments_count($v['feed_id'])?>个讨论</a>
+                </li>
+                <li>
+                        <span class="glyphicon <?php echo feed::user_collect_feed($this->user_id,$v['feed_id'])?'glyphicon-star':'glyphicon-star-empty'?>" aria-hidden="true"></span>
+                        <a href="javascript:void" onclick="<?php echo $this->user_id?'collect_link(this);':'mustLogin();';?>" data-feedid="<?php echo $v['feed_id']?>">私藏</a>
+                </li>
+                <li>
+                    <div class="bdsharebuttonbox" style="display:none" data-tag="list" data-feedid="<?php echo $v['feed_id']?>" data-title="<?php echo $v['title']?>" data-image="<?php echo $v['top_image']?>">
+                        <a title="分享到QQ空间" href="#" class="bds_qzone" data-cmd="qzone"></a>
+                        <a title="分享到新浪微博" href="#" class="bds_tsina" data-cmd="tsina"></a>
+                        <a title="分享到腾讯微博" href="#" class="bds_tqq" data-cmd="tqq"></a>
+                        <a title="分享到豆瓣" href="#" class="bds_douban" data-cmd="douban"></a>
+                        <a title="分享到人人网" href="#" class="bds_renren" data-cmd="renren"></a>
+                        <a title="分享到微信" href="#" class="bds_weixin" data-cmd="weixin"></a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+    <div class="child"></div>
+    <div class="clearleft"><!--IE6fix--></div>
+</div>
+<?php } ?>
+
+
+            <div class="pagination-container">
+                <?php include 'page.html'?>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+$(document).ready(function(){
+    $('.submission').mouseover(function(){$(this).find('.bdsharebuttonbox').show()})
+    $('.submission').mouseout(function(){$(this).find('.bdsharebuttonbox').hide()})
+})
+</script>
+<?php include 'footer.html';?>

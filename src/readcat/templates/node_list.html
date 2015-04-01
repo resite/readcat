@@ -1,0 +1,75 @@
+<?php include 'header.html'?>
+
+<div id="container">
+    <div class="side">
+        <div class="spacersection spacer">
+            <div class="alert-h1">
+                搜索节点
+            </div>
+            <form action="index.php" class="form-horizontal" method="get" role="form">
+                <input class="form-control" data-val="true" data-val-length="长度至少两个字" data-val-length-max="100" data-val-length-min="3" data-val-required="请输入关键词" id="q" name="q" placeholder="搜索节点" type="text" value="" />
+                <span class="field-validation-valid" data-valmsg-for="q" data-valmsg-replace="true"></span>
+                <input type="hidden" name="view" value="node"/>
+                <input type="hidden" name="entry" value="node_list" />
+            </form>
+        </div>
+        
+        <?php foreach($cate_list as $v){?>
+        <div class="spacer">
+            <div class="sidebox create">
+                <a href="index.php?view=node&cate_id=<?php echo $v['cate_id']?>" class="btn-whoaverse btn-block">
+                    <?php echo $v['cate_name']?>
+                </a>
+            </div>
+        </div>
+        <?php }?>
+        <div class="spacer">
+            <a href="/subverses/create" class="btn-whoaverse btn-block contribute">
+                向网站推荐节点
+            </a>
+        </div>
+    </div>
+
+    <div class="content" role="main">
+
+            <div class="alert-notice">
+                <p>订阅列表</p>
+            </div>
+
+        <div class="sitetable linklisting">
+        <?php $node_list_len = count($node_list);?>
+        <?php foreach($node_list as $k=>$v){ ?>
+                    <?php if (is_even($k)){ ?><ul class="list-inline"><?php } ?>
+                        <li class="col-md-6">
+
+
+
+<div class="midcol">
+    <?php echo html::subscribe_button($this->user_id,$v['node_id'])?>
+</div>
+
+<div class="entry">
+    <p class="titlerow">
+        <a href="index.php?view=feed&node_id=<?php echo $v['node_id']?>" class="h4" target="_blank"><?php echo $v['keywords']?></a>
+    </p>
+    <div class="well well-lg subversedescriptionbox">
+        <div class="usertext-body may-blank-within">
+            <div class="md">
+                    <p class="subversedescriptionboxcontent">喜欢<?php echo $v['keywords']?>的人都聚集在这里</p>
+            </div>
+        </div>
+    </div>
+</div>
+</li>
+
+                    <?php if(!is_even($k) || $k+1==$node_list_len){ ?></ul><?php } ?>
+            <?php } ?>
+            <div class="pagination-container">
+                <?php include 'page.html'?>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<?php include 'footer.html'?>

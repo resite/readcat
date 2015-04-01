@@ -1,0 +1,44 @@
+<?php include "header.html";?>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+        <?php include "submenu.html";?>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div class="header">
+            <ul class="nav nav-pills pull-right" role="tablist">
+              <li role="presentation" class="active"><a href="/admin/index.php?view=sys_config&entry=article_cate_edit" class="btn btn-default">新建</a></li>
+            </ul>
+            <h3 class="text-muted">文章分类列表</h3>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                	<tr>
+                        <th>#</th>
+                		<th>名称</th>
+                        <th>顺序</th>
+                        <th></th>
+                	</tr>
+                </thead>
+                <tbody>
+                    <?php foreach($article_cate_list as $val){ ?>
+                	<tr>
+                        <td><?php echo $val['article_cate_id'];?></td>
+                		<td><?php echo $val['cate_name'];?></td>
+                        <td><?php echo $val['sort_order'];?></td>
+                		<td>
+                            <a href="/admin/index.php?view=sys_config&entry=article_cate_edit&article_cate_id=<?php echo $val['article_cate_id'];?>">编辑</a>
+                            <a href="/admin/index.php?view=sys_config&entry=article_cate_edit&parent_id=<?php echo $val['article_cate_id'];?>">新建子分类</a>
+                            <a href="/admin/index.php?view=sys_config&entry=article_cate_del&article_cate_id=<?php echo $val['article_cate_id'];?>">删除</a>
+                        </td>
+                	</tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+            <?php include "page.html";?>
+        </div>
+        </div>
+    </div>
+</div>
+<?php include "footer.html";?>

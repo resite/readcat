@@ -1,0 +1,161 @@
+<?php include 'header.html'?>
+
+<div id="container" class="page-userprofile">
+
+    
+
+    <style>
+        .titlebox {
+            width: 251px;
+        }
+    </style>
+    <div class="side">
+        <div class="titlebox footer rounded">
+            <div class="thumbnail may-blank user-avatar">
+                    <img src="/Graphics/thumb-placeholder.png" alt="" class="user-avatar">
+            </div>
+            &rdquo;
+            <span class="user-quote">
+                Aww snap, this user did not yet write their bio. If they did, it would show up here, you know.
+            </span>
+            &rdquo;
+        </div>
+        <div class="bottom">
+            <p class="h6">
+                Member for: <b>14 hours</b><br />
+                <span class="bottommenu">(joined on: 2015/3/9)</span>
+            </p>
+            <a href="#" class="btn-whoaverse-paging disabled">
+                Follow
+            </a>
+            <a href="#" class="btn-whoaverse-paging disabled">
+                Block
+            </a>
+            <a href="#" class="btn-whoaverse-paging disabled">
+                Report
+            </a>
+            <a href="/messaging/compose?recipient=questionlin" class="btn-whoaverse-paging">
+                Send a message
+            </a>
+        </div>
+        <div class="titlebox footer rounded">
+            <h2 class="hover whoaversename">
+                Achievements and contributions
+            </h2>
+            <div class="bottom">
+                <p class="h6">
+                    Submission contribution points: <b>0</b>
+                </p>
+                <p class="h6">
+                    Comment contribution points: <b>0</b>
+                </p>
+            </div>
+            <div class="titlebox footer rounded">
+                <h2 class="hover whoaversename">
+                    Badges and trophies
+                </h2>
+                <div class="bottom">
+                        <img style="cursor: help" src="/Graphics/Badges/alpha_user.png" data-toggle="popover" data-trigger="focus" title="Early adopter" data-content="Alpha tester, joined Voat during its alpha testing phase" />
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="spacer">
+            <div class="titlebox footer rounded">
+                <h2 class="hover whoaversename">
+                    This user is not a moderator.
+                </h2>
+            </div>
+        </div>
+
+
+
+    </div>
+
+
+
+    <div class="content" role="main">
+
+        <div class="row nomargin">
+            <div class="well col-md-12">
+                <div class="alert-title">帐号管理</div>
+                
+
+                    <section id="userPreferences">
+                        
+
+<form action="index.php?view=user&entry=user_edit" class="form-horizontal" enctype="multipart/form-data" method="post" role="form">
+<div class="validation-summary-valid" data-valmsg-summary="true"><ul><li style="display:none"></li></ul></div>
+    <div class="form-group">
+        <label class="col-md-2 control-label" for="Shortbio">昵称</label>
+        <div class="col-md-10">
+            <input class="form-control" data-val="true" data-val-length="The short profile bio is limited to 100 characters." data-val-length-max="100" id="Shortbio" name="nickname" type="text" value="" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label" for="Avatarfile">头像</label>
+        <div class="col-md-10">
+            <input type="file" name="Avatarfile" />
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-3">
+            <input type="submit" value="Save" class="btn-whoaverse" />
+        </div>
+    </div>
+</form>
+
+
+                    </section>
+
+
+                <div class="alert-title">更新密码</div>
+                <h2>在这里更改密码</h2>
+                <br />
+
+                <p class="text-success"></p>
+
+
+
+<form action="index.php?view=user&entry=password_edit" class="form-horizontal" method="post" role="form">
+<div class="validation-summary-valid" data-valmsg-summary="true"><ul><li style="display:none"></li></ul></div>    <div class="form-group">
+        <label class="col-md-2 control-label" for="OldPassword">旧密码</label>
+        <div class="col-md-3">
+            <input class="form-control" data-val="true" data-val-required="请输入旧密码" id="OldPassword" name="OldPassword" type="password" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label" for="NewPassword">新密码</label>
+        <div class="col-md-3">
+            <input class="form-control" data-val="true" data-val-length="密码太短" data-val-length-max="100" data-val-length-min="6" data-val-regex="The character &lt; is not allowed. Sorry." data-val-regex-pattern="^[^&lt;]+$" data-val-required="Das Feld &quot;New password&quot; ist erforderlich." id="NewPassword" name="password1" type="password" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label" for="ConfirmPassword">确认新密码</label>
+        <div class="col-md-3">
+            <input class="form-control" data-val="true" data-val-equalto="和新密码不匹配" data-val-equalto-other="*.NewPassword" id="ConfirmPassword" name="password2" type="password" />
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-3">
+            <input type="submit" value="Submit" class="btn-whoaverse" />
+        </div>
+    </div>
+</form>
+
+                <section id="externalLogins">
+                    
+
+
+                </section>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+    
+<?php include 'footer.html'?>

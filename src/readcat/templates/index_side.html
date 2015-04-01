@@ -1,0 +1,58 @@
+
+<div class="side">
+
+    
+
+<div class="spacersection spacer">
+    <div class="alert-h1">
+        搜索节点
+    </div>
+    <form action="index.php" class="form-horizontal" method="get" role="form">
+        <input class="form-control" data-val="true" data-val-length="长度至少两个字" data-val-length-max="100" data-val-length-min="3" data-val-required="请输入关键词" id="q" name="q" placeholder="搜索节点" type="text" value="" />
+        <span class="field-validation-valid" data-valmsg-for="q" data-valmsg-replace="true"></span>
+        <input type="hidden" name="view" value="node"/>
+        <input type="hidden" name="entry" value="node_list" />
+    </form>
+</div>
+
+
+    <div class="spacer">
+        <a href="index.php?view=feed&entry=post&linkpost=true" class="btn-whoaverse btn-block contribute">
+            发布链接
+        </a>
+    </div>
+    <div class="spacer">
+        <a href="index.php?view=feed&entry=post" class="btn-whoaverse btn-block contribute">
+            发布讨论
+        </a>
+    </div>
+    <div class="spacer">
+        <div class="sidebox">
+            <a href="index.php?view=index&all=all" class="btn-whoaverse btn-block">
+                全部热门
+            </a>
+        </div>
+    </div>
+    <div class="spacer">
+        <div class="sidebox">
+            <a href="index.php?view=node&entry=node_list" class="btn-whoaverse btn-block">
+                全部节点
+            </a>
+        </div>
+    </div>
+
+    <div class="spacer spacersection">
+        <div class="alert-h1">
+            24小时获赞最多
+        </div>
+        <div>
+
+        <?php foreach($top_feed_list as $v){?>
+        <div class="top-points"><?php echo $v['ups']?></div><span class="top-title"><a href="index.php?view=feed&entry=feed_view&feed_id=<?php echo $v['feed_id']?>" tabindex="1" title="<?php echo $v['title']?>"><?php echo $v['title']?></a></span>
+        <div class="tagline">&nbsp;</div>
+        <?php }?>
+
+        </div>
+    </div>
+
+</div>

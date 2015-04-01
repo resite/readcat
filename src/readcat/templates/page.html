@@ -1,0 +1,14 @@
+<?php if($page['total']>1){ ?>
+<ul>
+    <?php if($page['pre']){?>
+    <li class="btn-whoaverse-paging">
+        <a href="<?php echo $page['get'],'&page=',$page['pre'];?>" rel="prev">‹ 上一页</a>
+    </li>
+    <?php }?>
+    <?php if($page['next']){?>
+    <li class="btn-whoaverse-paging">
+        <a href="<?php echo $page['get'],'&page=',$page['next'];?>" rel="next">下一页 ›</a>
+    </li>
+    <?php }?>
+</ul>
+<?php }?>

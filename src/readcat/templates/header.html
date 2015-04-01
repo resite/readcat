@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head prefix="og: http://ogp.me/ns#">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta lang="zh"/>
+    <meta name="description" content="<?php echo $sys_config['website_description']?>" />
+    <meta name="keywords" content="<?php echo $sys_config['website_keywords']?>" />
+
+    <title><?php echo $sys_config['website_title']?></title>
+    <meta property="og:title" content="<?php echo $sys_config['website_title']?>" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="/" />
+    <meta property="og:image" content="/templates/img/logo.png" />
+    <meta property="og:site_name" content="<?php echo $sys_config['website_name']?>" />
+    <meta property="og:description" content="<?php echo $sys_config['website_description']?>" />
+
+    <link href="//cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/templates/css/Site.min.css" rel="stylesheet"/>
+    <link href="/templates/css/Whoaverse.css" rel="stylesheet"/>
+    <link rel=StyleSheet href="/templates/css/themes/base/all.css" type="text/css">
+    <script src="/contents/js/jquery-2.1.3.min.js"></script>
+    <script src="/contents/js/jquery-ui-1.11.2.min.js"></script>
+
+
+
+    <script>
+        //ga('create', 'UA-49743834-1', 'voat.co');
+        //ga('require', 'displayfeatures');
+        //ga('send', 'pageview');
+    </script>
+
+    <link rel='shortcut icon' href="/templates/img/favicon.ico" type="image/x-icon" />
+
+</head>
+<body>
+
+    <div id="header" role="banner">
+
+
+
+
+<div id="sr-header-area">
+    <div class="width-clip">
+        <div class="sr-list">
+            <?php if($this->user_id){ ?>
+            <ul class="flat-list sr-bar hover">
+                <li <?php if($_view=='Vnode'&&$_GET['my']){?>class="selected"<?php }?>>
+                    <a href="index.php?view=node&entry=node_list&my=my">我的订阅</a>
+                </li>
+            </ul>
+            <?php }?>
+            <ul class="flat-list sr-bar hover">
+                <li <?php if($_view == 'Vindex' && !$_GET){?>class="selected"<?php }?>>
+                    <span class="separator">-</span>
+                    <a href="/">首页</a>
+                </li>
+                <li <?php if($_view == 'Vindex' && $_GET['all']){?>class="selected"<?php }?>>
+                    <span class="separator">-</span>
+                    <a href="/index.php?view=index&all=all">所有</a>
+                </li>
+                <?php foreach(node::top_cate_list() as $k=>$v){?>
+                <?php if($k<5){?>
+                <li <?php if($_view == 'Vindex' && $_GET['cate_id'] == $v['cate_id']){?>class="selected"<?php }?>>
+                    <span class="separator">-</span>
+                    <a href="/index.php?view=index&cate_id=<?php echo $v['cate_id']?>"><?php echo $v['cate_name']?></a>
+                </li>
+                <?php }?>
+                <?php }?>
+            </ul>
+            <ul class="whoaSubscriptionMenu flat-list sr-bar hover">
+                <li>
+                    <a href="#">更多</a>
+                    <span class="drop-arrow"></span>
+                    <ul style="visibility: hidden;<?php echo $this->user_id ? "left:320px;":"left:280px"?>">
+>">
+                        <?php foreach(node::top_cate_list() as $k=>$v){ ?>
+                        <?php if($k>=5){?>
+                        <li><a href="/index.php?view=index&cate_id=<?php echo $v['cate_id']?>"><?php echo $v['cate_name']?></a></li>
+                        <?php }?>
+                        <?php }?>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="flat-list sr-bar hover" id="sr-bar">
+            <?php foreach(node::top_node_list() as $v){ ?>
+                <li class="">
+                    <span class="separator">-</span>
+                    <a href="index.php?view=feed&node_id=<?php echo $v['node_id']?>" title="<?php echo $v['keywords']?>"><?php echo $v['keywords'];?></a>
+                </li>
+            <?php } ?>
+            </ul>
+        </div><a href="/index.php?view=node&entry=node_list" id="sr-more-link">更多 »</a>
+        <br />
+    </div>
+</div>
+
+
+        <div id="header-container">
+            <div id="header-banner">
+
+                <a title="<?php echo $sys_config['website_title']?>" href="/" id="header-img-a">
+                    <img id="header-img" src="/templates/img/logo.png" alt="Voat" height="31" width="121">
+                </a>
+                
+                <div id="show-menu-button"></div>
+
+
+
+
+            <ul class="tabmenu">
+                <li class="<?php echo (!$_GET['order'] || $_GET['order']=='hot')?'selected':'disabled'?>"><a href="<?php echo html::query_string(array('order','page'))?>" title="帖子按最热排序">最热</a></li>
+                <li class="<?php echo ($_GET['order']=='new')?'selected':'disabled'?>"><a href="<?php echo html::query_string(array('order','page')),'&order=new'?>" title="帖子按最新排序">最新</a></li>
+                <li class="<?php echo ($_GET['order']=='controversy')?'selected':'disabled'?>"><a href="<?php echo html::query_string(array('order','page')),'&order=controversy'?>" title="帖子按争议性排序">最具争议</a></li>
+                <li class="disabled"><a class="contribute" href="index.php?view=feed&entry=post">发布讨论</a></li>
+                <li class="disabled"><a class="contribute" href="index.php?view=feed&entry=post&linkpost=true">发布链接</a></li>
+            </ul>
+
+
+        <div id="header-account">
+        <?php if(!$this->user_id){ ?>
+            <div class="logged-out">
+                <span class="user"><a href="#" onclick="mustLogin();" class="login-required">登录</a> 或 <a href="index.php?view=index&entry=register">注册</a> 不用几秒钟</span>
+            </div>
+        <?php }else{ ?>
+            <div class="logged-in">
+                <span class="user">
+                    <?php echo $nickname?>
+                </span>
+                <span class="separator">|</span>
+                <span class="user">
+                    <a href="index.php?view=user&entry=voted_feeds" title="赞过">赞过</a>
+                </span>
+                <span class="separator">|</span>
+                <span class="user">
+                    <a href="index.php?view=user&entry=collected_feeds" title="私藏">私藏</a>
+                </span>
+                <span class="separator">|</span>
+                <span class="user"><a href="index.php?view=user&entry=manage" id="manage" title="Manage">管理</a></span>
+                <span class="separator">|</span>
+                <a href="index.php?view=user&entry=logout">退出</a>
+            </div>
+        <?php }?>
+        </div>
+
+
+            </div>
+        </div>
+    </div>
+
+    <?php if(!$this->user_id){ ?>
+    <!-- Must be logged in Modal -->
+    <div class="modal fade" id="mustbeloggedinModal" tabindex="-1" role="dialog" aria-labelledby="mustbeloggedinlabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="mustbeloggedinlabel">登陆</h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+
+
+
+
+        <section id="loginForm">
+<form action="index.php?view=index&entry=login" class="form-horizontal" method="post" role="form">
+                <div>
+                    <h2></h2>
+                    <br />
+                    <br />
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label" for="UserName">邮箱</label>
+                    <div class="col-md-4">
+                        <input class="form-control" data-val="true" data-val-required="请填写邮箱" id="UserName" name="email" type="text" value="" />
+                        <span class="field-validation-valid" data-valmsg-for="UserName" data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label" for="Password">密码</label>
+                    <div class="col-md-4">
+                        <input class="form-control" data-val="true" data-val-required="请填写密码" id="Password" name="password" type="password" />
+                        <span class="field-validation-valid" data-valmsg-for="Password" data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-4">
+                        <div class="checkbox">
+                            <input data-val="true" data-val-required="Das Feld &quot;Remember me?&quot; ist erforderlich." id="RememberMe" name="RememberMe" type="checkbox" value="true" /><input name="RememberMe" type="hidden" value="false" />
+                            <label for="RememberMe">自动登录</label>
+                        </div>                        
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-4">
+                        <input type="submit" value="登 录" class="btn-whoaverse" />
+                    </div>
+                </div>                
+</form>        </section>
+
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <b><a href="/index.php?view=index&entry=register">注册</a></b> 如果你没有账号
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Must be logged in Modal -->
+    <?php }?>
+    <!-- Not enough comment contribution points Modal -->
+    <div class="modal fade" id="notenoughccp" tabindex="-1" role="dialog" aria-labelledby="notenoughccplabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="notenoughccplabel">Hi! It looks like you are new around here</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Welcome to Voat!</p>
+                    <p>In order to downvote comments or submissions you need to have at least 100 comment contribution points.</p>
+                    <p>Every time someone upvotes one of your comments, you gain 1 comment contribution point.</p>
+                    <p>You currently have 0 comment contribution points.</p>
+                    <p>Tip: a good way to earn more contribution points is to take part in discussions or say hi in /v/introductions.</p>
+                    <p>This requirement was established as a measure to encourage new members to get involved and participate in discussions.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-whoaverse-medium" data-dismiss="modal">Ok, got it!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Not enough comment contribution points Modal -->
+    <!-- Not enough comment contribution points for upvoting Modal -->
+    <div class="modal fade" id="notenoughccpupvote" tabindex="-1" role="dialog" aria-labelledby="notenoughccpupvotelabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="notenoughccpupvotelabel">Hi! It looks like you are new around here.</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Welcome to Voat!</p>
+                    <p>In order to be able to upvote comments or submissions without limitations, you need to have at least 20 comment contribution points.</p>
+                    <p>You are currently limited to 10 upvotes per 24 hours.</p>
+                    <p>Every time someone upvotes one of your comments, you gain 1 comment contribution point.</p>
+                    <p>You currently have 0 comment contribution points.</p>
+                    <p>Tip: a good way to earn more contribution points is to take part in discussions or say hi in /v/introductions.</p>
+                    <p>This requirement was established as a measure to encourage new members to get involved and participate in discussions.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-whoaverse-medium" data-dismiss="modal">Ok, got it!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="modal-background"></div>
+    <!-- End Not enough comment contribution points for upvoting Modal -->
+    
+
+<div><?php echo $message?></div>
