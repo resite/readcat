@@ -1,0 +1,46 @@
+<?php include "header.html";?>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+        <?php include "submenu.html";?>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div class="header">
+            <ul class="nav nav-pills pull-right" role="tablist">
+              <li role="presentation" class="active"></li>
+            </ul>
+            <h3 class="text-muted">帖子列表</h3>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                	<tr>
+                        <th>#</th>
+                        <th>用户ID</th>
+                        <th>分类ID</th>
+                		<th>URL</th>
+                        <th>标题</th>
+                        <th>状态</th>
+                		<th></th>
+                	</tr>
+                </thead>
+                <tbody>
+                    <?php foreach($feed_list as $v){ ?>
+                	<tr>
+                        <td><?php echo $v['feed_id'];?></td>
+                		<td><?php echo $v['user_id'];?></td>
+                        <td><?php echo $v['cate_id'];?></td>
+                        <th><?php echo $v['url']?></th>
+                        <th><?php echo $v['title']?></th>
+                        <th><?php echo $v['status']?></th>
+                        <td><a href="/admin/index.php?view=feed&entry=feed&feed_id=<?php echo $v['feed_id']?>" target="_blank">查看内容</a></td>
+                	</tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+            <?php include "page.html";?>
+        </div>
+        </div>
+    </div>
+</div>
+<?php include "footer.html";?>

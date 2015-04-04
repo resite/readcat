@@ -1,0 +1,40 @@
+<?php include "header.html";?>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+        <?php include "submenu.html";?>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div class="header">
+            <ul class="nav nav-pills pull-right" role="tablist">
+              <li role="presentation" class="active"></li>
+            </ul>
+            <h3 class="text-muted">举报列表</h3>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                	<tr>
+                        <th>#</th>
+                		<th>类型</th>
+                		<th>目标ID</th>
+                		<th></th>
+                	</tr>
+                </thead>
+                <tbody>
+                    <?php foreach($report_list as $v){ ?>
+                	<tr>
+                        <td><?php echo $v['report_id'];?></td>
+                		<td><?php echo $v['report_type'];?></td>
+                        <td><?php echo $v['aim_id'];?></td>
+                        <td><a href="/admin/index.php?view=feed&entry=comment&comment_id=<?php echo $v['aim_id']?>" target="_blank">查看内容</a></td>
+                	</tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+            <?php include "page.html";?>
+        </div>
+        </div>
+    </div>
+</div>
+<?php include "footer.html";?>

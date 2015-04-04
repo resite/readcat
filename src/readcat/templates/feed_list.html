@@ -53,6 +53,7 @@
                 </li>
                 <li>
                     <div class="bdsharebuttonbox" style="display:none" data-tag="list" data-feedid="<?php echo $v['feed_id']?>" data-title="<?php echo $v['title']?>" data-image="<?php echo $v['top_image']?>">
+                        分享到
                         <a title="分享到QQ空间" href="#" class="bds_qzone" data-cmd="qzone"></a>
                         <a title="分享到新浪微博" href="#" class="bds_tsina" data-cmd="tsina"></a>
                         <a title="分享到腾讯微博" href="#" class="bds_tqq" data-cmd="tqq"></a>
@@ -80,8 +81,8 @@
 
 <script>
 $(document).ready(function(){
-    $('.submission').mouseover(function(){$(this).find('.bdsharebuttonbox').show()})
-    $('.submission').mouseout(function(){$(this).find('.bdsharebuttonbox').hide()})
+    $('.submission').mouseover(function(){$(this).find('.bdsharebuttonbox').css('visibility', 'visible')})
+    $('.submission').mouseout(function(){$(this).find('.bdsharebuttonbox').css('visibility', 'hidden')})
 })
 </script>
 <?php include 'footer.html';?>

@@ -17,7 +17,6 @@
                 	<tr>
                 		<th>代码</th>
                 		<th>值</th>
-                		<th>描述</th>
                         <th></th>
                 	</tr>
                 </thead>
@@ -26,7 +25,6 @@
                 	<tr>
                 		<td><?php echo $val['sys_config_id'];?></td>
                 		<td><?php echo $val['v'];?></td>
-                        <td><?php echo $val['sys_config_desc'];?></td>
                 		<td>
                             <a href="/admin/index.php?view=sys_config&entry=sys_config_edit&sys_config_id=<?php echo $val['sys_config_id'];?>">编辑</a>
                             <a href="/admin/index.php?view=sys_config&entry=sys_config_del&sys_config_id=<?php echo $val['sys_config_id'];?>">删除</a>

@@ -1,4 +1,5 @@
-images
+/src/crawlcat/images
+/release/crawlcat/images
 /src/crawlcat/userdict.txt
 /src/crawlcat/crawlcat.sqlite
 /release/crawlcat/crawlcat.sqlite

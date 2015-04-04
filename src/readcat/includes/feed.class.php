@@ -1,5 +1,9 @@
 <?php
 class feed extends model{
+    const CATE_TYPE_KEYWORDS = 0;
+    const CATE_TYPE_SELECTED = 1;
+    const CATE_TYPE_NOMAL = 2;
+    
     const AIM_TYPE_FEED = 0;
     const AIM_TYPE_COMMENT = 1;
     
@@ -12,7 +16,10 @@ class feed extends model{
     
     const FEED_STATUS_BLOCK = 0;
     const FEED_STATUS_ENABLE = 1;
+    const FEED_STATUS_WAITING = 2;
     const FEED_STATUS_STICKY = 5;
+    
+    const REPORT_TYPE_COMMENT = 0;
     
     function __construct(){
         $this->init();
@@ -22,10 +29,15 @@ class feed extends model{
     function init($table=''){
         if($this->table === $table) return;
         switch($table){
+        case 'reports':
+            $this->table = 'reports';
+            $this->pkey = 'report_id';
+            $this->fields = array('report_id'=>'','aim_id'=>'','report_type'=>'','user_id'=>'','add_time'=>'');
+            break;
         case 'comments':
             $this->table = 'comments';
             $this->pkey = 'comment_id';
-            $this->fields = array('comment_id'=>'','user_id'=>'','feed_id'=>'','content'=>'','add_time'=>'','parent_id'=>'','ups'=>'','downs'=>'','hot_score'=>'');
+            $this->fields = array('comment_id'=>'','user_id'=>'','feed_id'=>'','content'=>'','add_time'=>'','parent_id'=>'','ups'=>'','downs'=>'','hot_score'=>'','enabled'=>'');
             break;
         case 'votes':
             $this->table = 'votes';
@@ -52,11 +64,21 @@ class feed extends model{
     }
     
     function add_comment($data,$user_id){
+        $this->init('comments');
         $content = trim($data['content']);
-        if(!$content){
+        $content_len = mb_strlen($content);
+        if($content_len < 2 || $content_len > 255 || baddect::detect($content)){
             $this->message = '内容错误';
             return false;
         }
+        
+        $last_comment1 = $this->select_cache(array('content'),array('user_id'=>$user_id),'comment_id DESC','2');
+        $last_comment2 = $this->select_cache(array('content'),array('comment_id'=>$data['parent_id']),null,'1');
+        if($content == $last_comment1[0]['content'] || $content == $last_comment1[1]['content'] || $content == $last_comment2[0]['content']){
+            $this->message = '内容错误';
+            return false;
+        }
+        
         $data['content'] = $content;
         $data['user_id'] = $user_id;
         $data['ups'] = 0;
@@ -65,7 +87,6 @@ class feed extends model{
         $data['add_time'] = $_SERVER['REQUEST_TIME'];
         $data['enabled'] = 1;
         
-        $this->init('comments');
         $comment_id = $this->insert($data);
         $data['comment_id'] = $comment_id;
         $comment_arr = array($comment['parent_id']=>array($comment['hot_score']=>array($data)));
@@ -125,7 +146,7 @@ class feed extends model{
         $data['downs'] = 0;
         $data['hot_score'] = sorts::hot_score(0,0,$add_time);
         $data['controversy_score'] = 0;
-        $data['status'] = self::FEED_STATUS_BLOCK;
+        $data['status'] = self::FEED_STATUS_WAITING;
         $data['user_id'] = $user_id;
         
         $this->begin();
@@ -242,55 +263,67 @@ class feed extends model{
         $votes = $this->get(compact('aim_id','aim_type','user_id'));
         $last_vote_type = $votes['vote_type'];
         $vote_id = $votes['vote_id'];
-        
-        if($aim_type == self::AIM_TYPE_FEED){
-            $this->init();
-            //锁行
-            $feed = $this->get($aim_id,true);
-            $ups = $feed['ups'];
-            $downs = $feed['downs'];
-        }elseif($aim_type == self::AIM_TYPE_COMMENT){
-            $this->init('comments');
-            //锁行
-            $comment = $this->get($aim_id,true);
-            $ups = $comment['ups'];
-            $downs = $comment['downs'];
-        }
-        
-        if($score>0 && $last_vote_type != self::VOTE_TYPE_LIKE){
-            //改成喜欢
-            $ups += 1;
-            if($last_vote_type == self::VOTE_TYPE_DISLIKE)
-                $downs -= 1;
-            $vote_type = self::VOTE_TYPE_LIKE;
-        }elseif($score<0 && $last_vote_type != self::VOTE_TYPE_DISLIKE){
-            //改成不喜欢
-            $downs += 1;
-            if($last_vote_type == self::VOTE_TYPE_LIKE)
-                $ups -= 1;
-            $vote_type = self::VOTE_TYPE_DISLIKE;
-        }else{
-            //改成未打过
-            if($last_vote_type == self::VOTE_TYPE_DISLIKE)
-                $downs -= 1;
-            if($last_vote_type == self::VOTE_TYPE_LIKE)
-                $ups -= 1;
-            $vote_type = self::VOTE_TYPE_UNVOTE;
-        }
+        $OPR = array();
         
         $this->begin();
         try{
+            if($aim_type == self::AIM_TYPE_FEED){
+                $this->init();
+                //锁行
+                $feed = $this->get($aim_id,true);
+                $ups = $feed['ups'];
+                $downs = $feed['downs'];
+            }elseif($aim_type == self::AIM_TYPE_COMMENT){
+                $this->init('comments');
+                //锁行
+                $comment = $this->get($aim_id,true);
+                $ups = $comment['ups'];
+                $downs = $comment['downs'];
+            }
+            
+            if($score>0 && $last_vote_type != self::VOTE_TYPE_LIKE){
+                //改成喜欢
+                $ups += 1;
+                $OPR['ups[+]'] = 1;
+                if($last_vote_type == self::VOTE_TYPE_DISLIKE){
+                    $downs -= 1;
+                    $OPR['downs[-]'] = 1;
+                }
+                $vote_type = self::VOTE_TYPE_LIKE;
+            }elseif($score<0 && $last_vote_type != self::VOTE_TYPE_DISLIKE){
+                //改成不喜欢
+                $downs += 1;
+                $OPR['downs[+]'] = 1;
+                if($last_vote_type == self::VOTE_TYPE_LIKE){
+                    $ups -= 1;
+                    $OPR['ups[+]'] = 1;
+                }
+                $vote_type = self::VOTE_TYPE_DISLIKE;
+            }else{
+                //改成未打过
+                if($last_vote_type == self::VOTE_TYPE_DISLIKE){
+                    $downs -= 1;
+                    $OPR['downs[-]'] = 1;
+                }
+                if($last_vote_type == self::VOTE_TYPE_LIKE){
+                    $ups -= 1;
+                    $OPR['ups[-]'] = 1;
+                }
+                $vote_type = self::VOTE_TYPE_UNVOTE;
+            }
+        
             if($aim_type == self::AIM_TYPE_FEED){
                 //为了方便计算和存储，省略两位小数，转为整形
                 $hot_score = sorts::hot_score($ups, $downs, $feed['add_time']);
                 $controversy_score = sorts::controversy($ups, $downs);
                 $this->init();
-                $this->update(compact('ups','downs','hot_score','controversy_score'),array('feed_id'=>$aim_id));
+                $this->update(compact('OPR','hot_score','controversy_score'),array('feed_id'=>$aim_id));
+                $this->user_vote_feed($user_id,'refresh');
             }elseif($aim_type == self::AIM_TYPE_COMMENT){
                 //为了方便计算和存储，省略两位小数，转为整形
                 $hot_score = sorts::comment_hot_score($ups, $downs);
                 $this->init('comments');
-                $this->update(compact('ups','downs','hot_score'),array('comment_id'=>$aim_id));
+                $this->update(compact('OPR','hot_score'),array('comment_id'=>$aim_id));
             }
             
             $this->init('votes');
@@ -335,7 +368,7 @@ class feed extends model{
             $fields = array('vote_id','aim_id(comment_id)','vote_type');
             $where = array('user_id'=>$user_id,'feed_id'=>$feed_id,'aim_type'=>self::AIM_TYPE_COMMENT);
             $join = array('[<]comments'=>'comment_id');
-            $votes = $feed_mod->select_cache($fields,$where,null,500,$join);
+            $votes = $feed_mod->select($fields,$where,null,500,$join);
             if(!$votes){
                 $relation = 1;
             }else{
@@ -349,10 +382,17 @@ class feed extends model{
         return $comment_id?$relation[$comment_id]['vote_type']:$relation;
     }
     
-    static function user_vote_feed($user_id,$feed_id=null){
+    static function user_vote_feed($user_id,$feed_id='refresh'){
         if(!$user_id) return;
         
         static $relation = array();
+        if($feed_id == 'refresh'){
+            $feed_mod = model::load('feed');
+            $feed_mod->init('votes');
+            $feed_mod->delete_select_cache(array('vote_id','aim_id(feed_id)','vote_type'),array('user_id'=>$user_id,'aim_type'=>self::AIM_TYPE_FEED),null,500);
+            return;
+        }
+        
         if(empty($relation)){
             $feed_mod = model::load('feed');
             $feed_mod->init('votes');

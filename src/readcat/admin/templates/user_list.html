@@ -26,7 +26,7 @@
                 		<td><?php echo $val['nickname'];?></td>
                 		<td><?php echo $val['mob_phone'];?></td>
                         <td><?php echo user::user_type($val['type_id']);?></td>
-                		<td><a href="/admin/index.php?view=admin&entry=user_edit&user_id=<?php echo $val['user_id'];?>"></a>编辑</td>
+                		<td><a href="/admin/index.php?view=user&entry=user_edit&user_id=<?php echo $val['user_id'];?>">编辑</a></td>
                 	</tr>
                     <?php } ?>
                 </tbody>

@@ -5,6 +5,9 @@
         <?php include "submenu.html";?>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div class="header">
+            <h3 class="text-muted">管理员信息</h3>
+        </div>
         <form class="form" method="post" action="">
             <div class="form-group">
                 <label for="email">邮箱</label>
@@ -19,7 +22,7 @@
                 <input type="text" class="form-control" id="nickname" name="nickname" value="<?php echo $admin['nickname'];?>" />
             </div>
             <button class="btn btn-default" type="submit">提交</button>
-            <input type="hidden" name="admin_id" value="<?php echo $admin['admin_id'];?>" />
+            <input type="hidden" name="user_id" value="<?php echo $admin['user_id'];?>" />
         </form>
         </div>
     </div>

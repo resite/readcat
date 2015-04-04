@@ -64,7 +64,7 @@ class Vuser extends View{
             $this->assign['message'] = $model->message;
         }
         
-        if($_GET['admin_id'])
+        if($_GET['user_id'])
             $this->assign['admin'] = $model->get($_GET);
         $this->display('admin_edit');
     }

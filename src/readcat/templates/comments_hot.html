@@ -11,7 +11,7 @@
 
 
 
-        <div class="midcol <?php echo html::comment_vote_class($user_id,$feed_id,$comment['comment_id'])?>" style="">
+        <div class="midcol <?php echo html::comment_vote_class($user_id,$feed_id,$comment['comment_id'])?>" <?php if($hide){?>style="display:none"<?php }?>>
             <div class="<?php echo html::comment_vote_class($user_id,$feed_id,$comment['comment_id'],'arrow-upvote','arrow-upvoted','arrow-upvote')?> login-required" onclick="<?php echo $user_id? "voteUpComment({$comment['comment_id']});":"mustLogin();"?>" role="button" aria-label="upvote" tabindex="0"></div>
 
             <div class="<?php echo html::comment_vote_class($user_id,$feed_id,$comment['comment_id'],'arrow-downvote','arrow-downvoted','arrow-downvoted')?> login-required" onclick="<?php echo $user_id? "voteDownComment({$comment['comment_id']});":"mustLogin();"?>" role="button" aria-label="downvote" tabindex="0"></div>
@@ -20,7 +20,7 @@
 
 <div class="entry unvoted">
 
-    <div class="collapsed" <?php if($comment['enabled'] && $comment['downs']<=feed::COMMENT_DOWNS_CEILING){?>style="display:none"<?php }?>>
+    <div class="collapsed" <?php if(!$hide){?>style="display:none"<?php }?>>
         <a href="#" class="expand" onclick="return showcomment(<?php echo $comment['comment_id']?>)">[+]</a>
                 <a href="#" class="author gray may-blank"><?php html::nickname($comment['user_id'])?></a>
             <span class="userattrs"></span>
@@ -31,7 +31,7 @@
         &nbsp;<a href="#" class="expand" style="" onclick="return showcomment(<?php echo $comment['comment_id']?>)">(展开)</a>
     </div>
 
-    <div class="noncollapsed" id="<?php echo $comment['comment_id']?>" <?php if(!$comment['enabled'] || $comment['downs']>feed::COMMENT_DOWNS_CEILING){?>style="display:none"<?php }?>>
+    <div class="noncollapsed" id="<?php echo $comment['comment_id']?>" <?php if($hide){?>style="display:none"<?php }?>>
         <div class="tagline">
             <a href="#" class="expand" onclick="return hidecomment(<?php echo $comment['comment_id']?>)">[–]</a>
 
@@ -129,5 +129,6 @@
 </div>
 </div>
 
+<div class="comment-children" <?php if($hide){?>style="display:none"<?php }?>>
 <?php //child here, last '</div>' is in html::show_comments_building()?>
 

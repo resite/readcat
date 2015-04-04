@@ -1,12 +1,13 @@
 <?php
 class user extends model{
-    const TYPE_ADMIN = 0;//管理员
-    const TYPE_TELLER = 1;
-    const TYPE_SERVER = 2;
-    const TYPE_VERIFIER = 3;
+    const TYPE_BLOCKED = 0;
+    
+    const TYPE_ADMIN = 1;//管理员
+    const TYPE_TELLER = 2;
+    const TYPE_SERVER = 3;
+    const TYPE_VERIFIER = 4;
     
     const TYPE_USER = 5;//用户
-    const TYPE_BLOCKED = 10;
     
     static function admin_type($id=null){
         $status = array( self::TYPE_ADMIN => '管理员',self::TYPE_TELLER=>'财务');
@@ -18,7 +19,7 @@ class user extends model{
     }
     
     static function user_type($id=null){
-        $status = array( self::TYPE_USER => '用户');
+        $status = array(self::TYPE_BLOCKED=>'锁定用户', self::TYPE_USER => '用户');
         if ($id == null) {
             return $status;
         } else {
@@ -65,8 +66,8 @@ class user extends model{
         }
         
         $user = $this->get(array('nickname'=>$data['nickname']));
-        if($user){
-            $this->message = '昵称已存在';
+        if(baddect::detect($data['nickname']) || $user){
+            $this->message = '昵称错误';
             return false;
         }
         
@@ -78,7 +79,6 @@ class user extends model{
             if(!$user_id) return false;
             
             $_SESSION['user_id'] = $user_id;
-            $_SESSION['user_type'] = self::TYPE_USER;
             setcookie('nickname',$data['nickname']);
             
             $this->commit();
@@ -108,7 +108,6 @@ class user extends model{
         $user = $this->get($where);
         if($user['password'] == md5($data['password']) && $type_arr[$user['type_id']]){
             $_SESSION['user_id'] = $user['user_id'];
-            $_SESSION['user_type'] = $user['type_id'];
             setcookie('nickname',$user['nickname']);
             //$this->session->delete($user[$this->pkey]);多端口登录
             return true;
@@ -125,9 +124,9 @@ class user extends model{
     }
     
     function logout(){
-        $_SESSION['user_id']=null;
-        $_SESSION['user_type']=null;
-        $_SESSION['is_admin']=null;
+        unset($_SESSION['user_id']);
+        unset($_SESSION['user_type']);
+        unset($_SESSION['is_admin']);
         return true;
     }
     
@@ -137,6 +136,7 @@ class user extends model{
             return false;
         }
         parent::edit($data);
+        $this->delete_get_cache($data['user_id']);
     }
     
     function edit_password($data){

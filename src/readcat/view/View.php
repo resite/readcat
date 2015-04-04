@@ -1,6 +1,6 @@
 <?php
 class View{
-    var $user_id,$user_type,$is_admin,$session,$assign=array();
+    var $user_id,$is_admin,$session,$assign=array();
 
     function __construct(){
         //todo 定义SEO，过滤非正常输入
@@ -10,7 +10,6 @@ class View{
         
         session_start();
         $this->user_id = $_SESSION['user_id'];
-        $this->user_type = $_SESSION['user_type'];
         $this->is_admin = isset($_SESSION['is_admin'])?1:0;
         
         $sys_model = model::load('sys_config');

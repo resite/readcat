@@ -22,7 +22,7 @@ define('CONTENTS_PATH',ROOT_PATH.'contents/');
 if(defined('ADMIN')){
     define('VIEW_PATH',ROOT_PATH.'admin/view/');
     define('TEMPLATES_PATH',ROOT_PATH.'admin/templates/');
-    define('SELECT_LIMIT',20);
+    define('SELECT_LIMIT',50);
 }else{
     define('VIEW_PATH',ROOT_PATH.'view/');
     define('SELECT_LIMIT',25);

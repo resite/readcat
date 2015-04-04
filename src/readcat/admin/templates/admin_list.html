@@ -29,7 +29,7 @@
                 		<td><?php echo $val['nickname'];?></td>
                         <td><?php echo $val['mob_phone'];?></td>
                         <td><?php echo user::admin_type($val['type_id']);?></td>
-                		<td><a href="/admin/index.php?view=user&entry=admin_edit&admin_id=<?php echo $val['admin_id'];?>">编辑</a></td>
+                		<td><a href="/admin/index.php?view=user&entry=admin_edit&user_id=<?php echo $val['user_id'];?>">编辑</a></td>
                 	</tr>
                     <?php } ?>
                 </tbody>

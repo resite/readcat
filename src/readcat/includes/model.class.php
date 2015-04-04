@@ -30,7 +30,13 @@ class model{
     }
     
     function update($data,$where = null){
+        if(is_array($data['OPR'])){
+            $opr = $data['OPR'];
+        }
         $data = array_intersect_key($data,$this->fields);
+        if($opr){
+            $data = array_merge($data,$opr);
+        }
         
         if($where !=null && !is_array($where)){
             $where = array($this->pkey=>$where);
@@ -91,7 +97,7 @@ class model{
         if(!$this->cache){
             return $this->select($fields,$_where,$order,$size,$join);
         }
-        $key = $this->table.$this->pkey.$fields.serialize($where).$order.$size;
+        $key = 'select'.$this->table.$this->pkey.$fields.serialize($where).$order.$size;
         $rows = $this->cache->get($key);
         if(!$rows){
             $rows = $this->select($fields,$_where,$order,$size,$join);
@@ -100,9 +106,9 @@ class model{
         return $rows;
     }
     
-    function delete_select_cache($fields = '*', $_where = null, $order = null, $size = 0) {
+    function delete_select_cache($fields = '*', $_where = null, $order = null, $size = 0, $join = null) {
         if($this->cache){
-            $key = $this->table.$this->pkey.$fields.serialize($where).$order.$size;
+            $key = 'select'.$this->table.$this->pkey.$fields.serialize($where).$order.$size;
             $this->cache->delete($key);
         }
     }
@@ -137,7 +143,7 @@ class model{
     
     function delete_get_cache($where){
         if($this->cache){
-            $key = $this->table.$this->pkey.serialize($where);
+            $key = 'get'.$this->table.$this->pkey.serialize($where);
             $this->cache->delete($key);
         }
     }

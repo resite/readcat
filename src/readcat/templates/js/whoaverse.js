@@ -69,7 +69,7 @@ var share_config = {}
 function setShare(){
     share_config['bdText'] = $(this).data('title')
     share_config['bdPic'] = $(this).data('image')
-    share_config['bdUrl'] = 'http://readcat.cn/index.php?view=feed&entry=feed_view&feed_id='+$(this).data('feedid')
+    share_config['bdUrl'] = 'http://www.maomaolou.com/index.php?view=feed&entry=feed_view&feed_id='+$(this).data('feedid')
 }
 function collect_link(obj){
     var icon = $(obj).prev('span')
@@ -651,7 +651,8 @@ function showcomment(commentid) {
     //show voting icons
     $("#" + commentid).parent().parent().find('.midcol').filter(":first").toggle(1);
     //show all children
-    $("#" + commentid).parent().parent().find('.child').toggle(1);
+    //$("#" + commentid).parent().parent().find('.child').toggle(1);
+    $("#" + commentid).parent().parent().find('.comment-children').toggle(1);
 
     return (false);
 }
@@ -664,7 +665,8 @@ function hidecomment(commentid) {
     //hide voting icons
     $("#" + commentid).parent().parent().find('.midcol').filter(":first").toggle(1);
     //hide all children
-    $("#" + commentid).parent().parent().find('.child').toggle(1);
+    //$("#" + commentid).parent().parent().find('.child').toggle(1);
+    $("#" + commentid).parent().parent().find('.comment-children').toggle(1);
 
     return (false);
 }
@@ -774,7 +776,7 @@ function reportcomment(obj, commentid) {
     // submit report
     $.ajax({
         type: "POST",
-        url: "/index.php&view=feed&entry=report_comment&comment_id=" + commentid,
+        url: "/index.php?view=feed&entry=report_comment&comment_id=" + commentid,
         success: function () {
             $(obj).parent().parent().find('.togglebutton').html("已收到！");
         },

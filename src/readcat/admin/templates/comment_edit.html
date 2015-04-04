@@ -1,0 +1,37 @@
+<?php include "header.html";?>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+        <?php include "submenu.html";?>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div class="header">
+            <h3 class="text-muted">评论信息</h3>
+        </div>
+        <form class="form" method="post" action="">
+            <div class="form-group ">
+                <label for="comment_id" class="">ID</label>
+                <input type="text" class="form-control" id="comment_id" name="comment_id" readonly value="<?php echo $comment['comment_id'];?>" />
+            </div>
+            <div class="form-group">
+                <label for="content">内容</label>
+                <div>
+                  <p class="form-control-static"><?php echo $comment['content']?></p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="nickname">用户ID</label>
+                <div>
+                  <p class="form-control-static"><?php echo $comment['user_id']?></p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="enabled">显示</label>
+                <input type="text" class="form-control" id="enabled" name="enabled" value="<?php echo $comment['enabled'];?>" />
+            </div>
+            <button class="btn btn-default" type="submit">提交</button>
+        </form>
+        </div>
+    </div>
+</div>
+<?php include "footer.html";?>

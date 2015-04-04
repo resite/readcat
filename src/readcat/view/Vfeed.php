@@ -1,5 +1,27 @@
 <?php
 class Vfeed extends View{
+    function __construct(){
+        parent::__construct();
+        
+        global $_entry;
+        
+        $login_entry = array('entry_post','entry_post_comment','entry_vote_feed','entry_vote_comment','entry_collect_feed','entry_report_comment');
+        if(in_array($_entry,$login_entry)){
+            if(!$this->user_id){
+                header('Location: /index.php?view=index&entry=login');
+                exit;
+            }
+            $user_mod = model::load('user');
+            $user = $user_mod->get_cache($this->user_id);
+            
+            if($user['user_type'] == user::TYPE_BLOCKED){
+                $this->assign['message'] ='禁止操作';
+                $this->display('message');
+                exit;
+            }
+        }
+    }
+    
     function entry(){
         $this->entry_feed_list();
     }
@@ -44,7 +66,7 @@ class Vfeed extends View{
         $where = array('cate_id'=>$node['cate_id'],'order' => 'ups');
         $this->assign['top_feed_list'] = $feed_mod->select_feeds($fields,$where);
         
-        $fields = array('comment_id','user_id','content','add_time','ups','downs','hot_score','parent_id');
+        $fields = array('comment_id','user_id','content','add_time','ups','downs','hot_score','parent_id','enabled');
         $this->assign['comments'] = $feed_mod->select_comments($fields,$feed['feed_id']);
         
         if($_GET['feed_id']){
@@ -56,9 +78,6 @@ class Vfeed extends View{
     }
     
     function entry_post(){
-        if(!$this->user_id)
-            header('Location: /index.php?view=index&entry=login');
-        
         if(is_post()){
             $feed_mod = model::load('feed');
             if($feed_mod->add_feed($_POST,$this->user_id)){
@@ -79,9 +98,11 @@ class Vfeed extends View{
     function entry_post_comment(){
         $feed_mod = model::load('feed');
         $feed_mod->init('comments');
-        $comment_arr = $feed_mod->add_comment($_POST,$this->user_id);
         
-        html::show_comments_building($this->user_id,$_POST['feed_id'],$comment_arr,$_POST['patent_id']);
+        if(is_post()){
+            $comment_arr = $feed_mod->add_comment($_POST,$this->user_id);
+            html::show_comments_building($this->user_id,$_POST['feed_id'],$comment_arr,$_POST['patent_id']);
+        }
     }
     
     //ajax
@@ -105,11 +126,12 @@ class Vfeed extends View{
         $feed_mod->collect_feed($feed_id,$this->user_id);
     }
     
+    //ajax
     function entry_report_comment(){
         if($_REQUEST['comment_id']){
-            $sys_config = model::load('sys_config');
+            $sys_config = model::load('feed');
             $sys_config->init('reports');
-            $sys_config->insert(array('aim_id'=>$_REQUEST['comment_id'],'user_id'=>$this->user_id,'report_type'=>sys_config::REPORT_TYPE_COMMENT));
+            $sys_config->insert(array('aim_id'=>$_REQUEST['comment_id'],'user_id'=>$this->user_id,'report_type'=>feed::REPORT_TYPE_COMMENT));
         }
     }
 }
