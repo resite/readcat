@@ -101,7 +101,7 @@ class model{
         $rows = $this->cache->get($key);
         if(!$rows){
             $rows = $this->select($fields,$_where,$order,$size,$join);
-            if($rows) $this->cache->set($key,$rows,0,3600);
+            if($rows) $this->cache->set($key,$rows,0,300);
         }
         return $rows;
     }
@@ -136,7 +136,7 @@ class model{
         $row = $this->cache->get($key);
         if(!$row){
             $row = $this->get($where);
-            if($row) $this->cache->set($key,$row,0,3600);
+            if($row) $this->cache->set($key,$row,0,900);
         }
         return $row;
     }
@@ -178,7 +178,7 @@ class model{
         $row = $this->cache->get($key);
         if(!$row){
             $row = $this->count($where);
-            if($row) $this->cache->set($key,$row,0,3600);
+            if($row) $this->cache->set($key,$row,0,300);
         }
         return $row;
     }

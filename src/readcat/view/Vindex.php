@@ -38,10 +38,14 @@ class Vindex extends View{
     
     function entry_register(){
         $model = model::load('user');
-        if(is_post() && $model->register($_POST)){
-            header('Location: /');
-        }else{
-            $this->assign['message']=$model->message;
+        if(is_post()){
+            if($model->register($_POST)){
+                header('Location: /');
+            }else{
+                $this->assign['message']=$model->message;
+                $this->display('message');
+                exit;
+            }
         }
         
         $this->display('register');

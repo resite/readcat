@@ -68,7 +68,7 @@ class user extends model{
         }
         
         $user = $this->get(array('nickname'=>$data['nickname']));
-        if(baddect::detect($data['nickname']) || $user){
+        if(baddet::detect($data['nickname']) || $user){
             $this->message = '昵称错误';
             return false;
         }

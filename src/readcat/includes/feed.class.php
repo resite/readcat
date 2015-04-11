@@ -67,7 +67,7 @@ class feed extends model{
         $this->init('comments');
         $content = trim($data['content']);
         $content_len = mb_strlen($content);
-        if($content_len < 2 || $content_len > 255 || baddect::detect($content)){
+        if($content_len < 2 || $content_len > 255 || baddet::detect($content)){
             $this->message = '内容错误';
             return false;
         }
