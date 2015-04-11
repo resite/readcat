@@ -136,13 +136,11 @@ class html{
     static function show_comments_building($user_id,$feed_id,&$arr,$pid){
         $child_arr = $arr[$pid];
         if($child_arr){
-            //$blank .= '-';
             krsort($child_arr);
             foreach($child_arr as $comments){
                 foreach($comments as $comment){
                     $hide = (!$comment['enabled'] || $comment['downs']>feed::COMMENT_DOWNS_CEILING) ? true : false;
                     include TEMPLATES_PATH.'comments_hot.html';
-                    //echo $blank,$v['c'],'<br>';
                     self::show_comments_building($user_id,$feed_id,$arr,$comment['comment_id']);
                     echo '</div></div>';
                 }

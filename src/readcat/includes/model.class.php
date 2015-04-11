@@ -97,7 +97,7 @@ class model{
         if(!$this->cache){
             return $this->select($fields,$_where,$order,$size,$join);
         }
-        $key = 'select'.$this->table.$this->pkey.$fields.serialize($where).$order.$size;
+        $key = 'select'.$this->table.$this->pkey.$fields.serialize($_where).$order.$size;
         $rows = $this->cache->get($key);
         if(!$rows){
             $rows = $this->select($fields,$_where,$order,$size,$join);
@@ -108,7 +108,7 @@ class model{
     
     function delete_select_cache($fields = '*', $_where = null, $order = null, $size = 0, $join = null) {
         if($this->cache){
-            $key = 'select'.$this->table.$this->pkey.$fields.serialize($where).$order.$size;
+            $key = 'select'.$this->table.$this->pkey.$fields.serialize($_where).$order.$size;
             $this->cache->delete($key);
         }
     }

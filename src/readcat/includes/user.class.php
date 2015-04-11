@@ -9,6 +9,8 @@ class user extends model{
     
     const TYPE_USER = 5;//用户
     
+    const AUTH_SALT = 'READCAT';
+    
     static function admin_type($id=null){
         $status = array( self::TYPE_ADMIN => '管理员',self::TYPE_TELLER=>'财务');
         if ($id == null) {
@@ -43,7 +45,7 @@ class user extends model{
         default:
             $this->table = 'users';
             $this->pkey = 'user_id';
-            $this->fields = array('user_id'=>'','email'=>'','password'=>'','nickname'=>'','type_id'=>'','last_login_time'=>'','last_login_ip'=>'');
+            $this->fields = array('user_id'=>'','email'=>'','password'=>'','nickname'=>'','type_id'=>'','mob_phone'=>'','add_time'=>'','identifier'=>'','token'=>'','timeout'=>'');
             break;
         }
     }
@@ -73,10 +75,10 @@ class user extends model{
         
         $data['type_id'] = self::TYPE_USER;
         $data['password'] = md5($data['password']);
+        $data['add_time'] = $_SERVER['REQUEST_TIME'];
         $this->begin();
         try{
             $user_id = $this->insert($data);
-            if(!$user_id) return false;
             
             $_SESSION['user_id'] = $user_id;
             setcookie('nickname',$data['nickname']);
@@ -96,19 +98,43 @@ class user extends model{
         $this->update(array('email_status'=>1),array('user_id'=>$user['user_id']));
     }
     
+    function check_login(){
+        list($identifier, $token) = explode(':',$_COOKIE['auth']);
+        
+        if(!ctype_alnum($identifier) || !ctype_alnum($token)){
+            return false;
+        }
+        $now = $_SERVER['REQUEST_TIME'];
+        $user = $this->get(array('identifier'=>$identifier));
+        if(!$user) return false;
+        
+        if($token == $user['token'] && $now <= $user['timeout']){
+            $_SESSION['user_id'] = $user['user_id'];
+        }
+    }
+    
     function login($data,$type_arr=null){
         if(!filter_var($data['email'],FILTER_VALIDATE_EMAIL)){
             $this->message = '邮箱格式错误';
             return false;
         }
-        
+
         if(!$type_arr) $type_arr = self::user_type();
         
         $where = array('email'=>$data['email']);
         $user = $this->get($where);
         if($user['password'] == md5($data['password']) && $type_arr[$user['type_id']]){
+            if(isset($data['RememberMe'])){
+                $identifier = md5(self::AUTH_SALT.md5($data['nickname'].self::AUTH_SALT));
+                $token = md5(uniqid(rand(),true));
+                $timeout = $_SERVER['REQUEST_TIME'] + 259200;
+                setcookie('auth',"$identifier:$token",$timeout);
+                
+                $this->update(compact('identifier','token','timeout'),array('user_id'=>$user['user_id']));
+            }
             $_SESSION['user_id'] = $user['user_id'];
-            setcookie('nickname',$user['nickname']);
+            setcookie('nickname',$user['nickname'],$_SERVER['REQUEST_TIME']+2592000);
+            //259200 = 3600*24*30
             //$this->session->delete($user[$this->pkey]);多端口登录
             return true;
         }else{
@@ -125,8 +151,8 @@ class user extends model{
     
     function logout(){
         unset($_SESSION['user_id']);
-        unset($_SESSION['user_type']);
         unset($_SESSION['is_admin']);
+        setcookie('auth','',$_SERVER['REQUEST_TIME']);
         return true;
     }
     
@@ -135,7 +161,7 @@ class user extends model{
             $this->message = '邮箱错误';
             return false;
         }
-        parent::edit($data);
+        parent::edit($data,$where);
         $this->delete_get_cache($data['user_id']);
     }
     

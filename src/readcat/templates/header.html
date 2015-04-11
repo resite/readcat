@@ -11,27 +11,27 @@
     <meta property="og:title" content="<?php echo $sys_config['website_title']?>" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="/" />
-    <meta property="og:image" content="/templates/img/logo.png" />
+    <meta property="og:image" content="<?php echo CDN_URL?>/templates/img/logo.png" />
     <meta property="og:site_name" content="<?php echo $sys_config['website_name']?>" />
     <meta property="og:description" content="<?php echo $sys_config['website_description']?>" />
 
     <link href="//cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet"/>
-    <link href="/templates/css/Site.min.css" rel="stylesheet"/>
-    <link href="/templates/css/Whoaverse.css" rel="stylesheet"/>
-    <link rel=StyleSheet href="/templates/css/themes/base/all.css" type="text/css">
-    <script src="/contents/js/jquery-2.1.3.min.js"></script>
-    <script src="/contents/js/jquery-ui-1.11.2.min.js"></script>
+    <link href="<?php echo CDN_URL?>/templates/css/Site.min.css" rel="stylesheet"/>
+    <link href="<?php echo CDN_URL?>/templates/css/Whoaverse.css" rel="stylesheet"/>
+    <link rel=StyleSheet href="//cdn.bootcss.com/jqueryui/1.11.2/jquery-ui.min.css" type="text/css">
+    <script src="//cdn.bootcss.com/jquery/2.1.3/jquery.min.js"></script>
+    <script src="//cdn.bootcss.com/jqueryui/1.11.2/jquery-ui.min.js"></script>
 
-
-
+    <link rel='shortcut icon' href="<?php echo CDN_URL?>/templates/img/favicon.ico" type="image/x-icon" />
     <script>
-        //ga('create', 'UA-49743834-1', 'voat.co');
-        //ga('require', 'displayfeatures');
-        //ga('send', 'pageview');
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?b2e20fbcbb7fadcee99c953a7e1b084a";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
     </script>
-
-    <link rel='shortcut icon' href="/templates/img/favicon.ico" type="image/x-icon" />
-
 </head>
 <body>
 
@@ -73,7 +73,6 @@
                     <a href="#">更多</a>
                     <span class="drop-arrow"></span>
                     <ul style="visibility: hidden;<?php echo $this->user_id ? "left:320px;":"left:280px"?>">
->">
                         <?php foreach(node::top_cate_list() as $k=>$v){ ?>
                         <?php if($k>=5){?>
                         <li><a href="/index.php?view=index&cate_id=<?php echo $v['cate_id']?>"><?php echo $v['cate_name']?></a></li>
@@ -187,7 +186,7 @@
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-4">
                         <div class="checkbox">
-                            <input data-val="true" data-val-required="Das Feld &quot;Remember me?&quot; ist erforderlich." id="RememberMe" name="RememberMe" type="checkbox" value="true" /><input name="RememberMe" type="hidden" value="false" />
+                            <input data-val="true" data-val-required="要自动登陆吗？" id="RememberMe" name="RememberMe" type="checkbox" value="true" />
                             <label for="RememberMe">自动登录</label>
                         </div>                        
                     </div>

@@ -73,17 +73,17 @@ function setShare(){
 }
 function collect_link(obj){
     var icon = $(obj).prev('span')
-    if(icon.hasClass('glyphicon-star-empty')){
-        icon.removeClass('glyphicon-star-empty')
-        icon.addClass('glyphicon-star')
+    if(icon.hasClass('glyphicon-heart-empty')){
+        icon.removeClass('glyphicon-heart-empty')
+        icon.addClass('glyphicon-heart')
     }else{
-        icon.removeClass('glyphicon-star')
-        icon.addClass('glyphicon-star-empty')
+        icon.removeClass('glyphicon-heart')
+        icon.addClass('glyphicon-heart-empty')
     }
     
     $.ajax({
         type: "POST",
-        url: "/index.php?view=feed&entry=collect_feed&feed_id=" + $(this).data('feedid')
+        url: "/index.php?view=feed&entry=collect_feed&feed_id=" + $(obj).data('feedid')
     });    
 }
 

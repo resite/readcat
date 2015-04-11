@@ -135,7 +135,8 @@ class crawlcatSpider(CrawlSpider) :
             if img_rule:
                 src_attr = self.url_sel_rules[_url]['src_attr'] if self.url_sel_rules[_url]['src_attr'] else 'src'
                 img_src = _sel.css('%s ::attr(%s)' % (img_rule, src_attr)).extract()
-                link[url]['image_urls'] = [img_src[0]]
+                if len(img_src) > 0:
+                    link[url]['image_urls'] = [img_src[0]]
 
 
     #匹配标题和关键词

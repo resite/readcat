@@ -3,17 +3,21 @@ class View{
     var $user_id,$is_admin,$session,$assign=array();
 
     function __construct(){
-        //todo 定义SEO，过滤非正常输入
-        //$this->session = new SessionStorageDb();
-        //$this->session->setConf(DB_HOST.':'.DB_PORT, DB_USER, DB_PASSWORD, DB_NAME, 'utf8');
-        //$this->session->execute();
+        $this->session = new SessionStorageDb();
+        $this->session->setConf(DB_HOST.':'.DB_PORT, DB_USER, DB_PASSWORD, DB_NAME);
+        session_set_save_handler($this->session,true);
         
         session_start();
+        if(!$_SESSION['user_id']){
+            $user_mod = model::load('user');
+            $user_mod->check_login();
+        }
+        
         $this->user_id = $_SESSION['user_id'];
         $this->is_admin = isset($_SESSION['is_admin'])?1:0;
         
         $sys_model = model::load('sys_config');
-        $sys_config = $sys_model->make_assoc($sys_model->db->select($sys_model->table,array($sys_model->pkey,'v')),'v');
+        $sys_config = $sys_model->make_assoc($sys_model->select_cache(array($sys_model->pkey,'v')),'v');
         $this->assign['sys_config'] = $sys_config;
 
         //if($sys_config['rewrite'])

@@ -13,7 +13,10 @@ class Vindex extends View{
         }else{
             $this->assign['feed_list'] = $feed_mod->select_feeds($fields,$_GET,$this->user_id);
         }
-        $this->show_page(SELECT_LIMIT*100);
+
+        if(count($this->assign['feed_list']) == SELECT_LIMIT){
+            $this->show_page(SELECT_LIMIT*100);
+        }
         
         $fields = array('feed_id','title','ups');
         $where = $_GET;

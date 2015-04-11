@@ -45,7 +45,7 @@
 
                     <?php if($feed['top_image']){?>
                     <a class="thumbnail may-blank" href="<?php echo $feed['url']?$feed['url']:'#'?>" target="_self">
-                        <img src="/contents/images/thumbs/small/<?php echo $feed['top_image']?>" alt="<?php echo $feed['title']?>" />
+                        <img src="<?php echo CDN_URL?>/contents/images/thumbs/small/<?php echo $feed['top_image']?>" alt="<?php echo $feed['title']?>" />
                     </a>
                     <?php }?>
 
@@ -89,8 +89,8 @@
         <a href="#" class="comments may-blank"><?php echo html::comments_count($feed['feed_id'])?>个讨论</a>
     </li>
     <li>
-            <span class="glyphicon <?php echo feed::user_collect_feed($this->user_id,$v['feed_id'])?'glyphicon-star':'glyphicon-star-empty'?>" aria-hidden="true"></span>
-            <a href="javascript:void" onclick="<?php echo $this->user_id?'collect_link();':'mustLogin();';?>" data-feedid="<?php echo $v['feed_id']?>">私藏</a>
+            <span class="glyphicon <?php echo feed::user_collect_feed($this->user_id,$v['feed_id'])?'glyphicon-heart':'glyphicon-heart-empty'?>" aria-hidden="true"></span>
+            <a href="javascript:void" onclick="<?php echo $this->user_id?'collect_link(this);':'mustLogin();';?>" data-feedid="<?php echo $v['feed_id']?>">私藏</a>
     </li>
     <li>
         <a href="javascript:void(0)" class="spread_btn" >展开</a>

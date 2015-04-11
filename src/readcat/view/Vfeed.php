@@ -13,8 +13,8 @@ class Vfeed extends View{
             }
             $user_mod = model::load('user');
             $user = $user_mod->get_cache($this->user_id);
-            
-            if($user['user_type'] == user::TYPE_BLOCKED){
+
+            if($user['type_id'] == user::TYPE_BLOCKED){
                 $this->assign['message'] ='禁止操作';
                 $this->display('message');
                 exit;
@@ -30,7 +30,10 @@ class Vfeed extends View{
         $feed_mod = model::load('feed');
         $fields = array('feed_id','url','title','top_image','ups','downs','add_time','domain','user_id');
         $this->assign['feed_list'] = $feed_mod->select_feeds($fields,$_GET);
-        $this->show_page(SELECT_LIMIT*100);
+        
+        if(count($this->assign['feed_list']) == SELECT_LIMIT){
+            $this->show_page(SELECT_LIMIT*100);
+        }
         
         $node_mod = model::load('node');
         $node = $node_mod->get($_GET['node_id']);

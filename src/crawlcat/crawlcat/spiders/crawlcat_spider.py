@@ -39,8 +39,8 @@ class crawlcatSpider(CrawlSpider) :
         
         #初始化关键词
         num_list = ['0','1','2','3','4','5','6','7','8','9','一','二','三','四','五','六','七','八','九','十']
-        quantifier_list = ['个','款','种','大','条','件']
-        num_keywords = ['十佳'.decode('utf-8'),'排行'.decode('utf-8')]
+        quantifier_list = ['个','款','种','大','条','件','佳']
+        num_keywords = ['排行'.decode('utf-8'),'神作'.decode('utf-8')]
         
         for num in num_list:
             for quantifier in quantifier_list:
@@ -135,7 +135,8 @@ class crawlcatSpider(CrawlSpider) :
             if img_rule:
                 src_attr = self.url_sel_rules[_url]['src_attr'] if self.url_sel_rules[_url]['src_attr'] else 'src'
                 img_src = _sel.css('%s ::attr(%s)' % (img_rule, src_attr)).extract()
-                link[url]['image_urls'] = [img_src[0]]
+                if len(img_src) > 0:
+                    link[url]['image_urls'] = [img_src[0]]
 
 
     #匹配标题和关键词
