@@ -51,6 +51,11 @@ class user extends model{
     }
     
     function register($data){
+        if(strtolower($data['captcha']) != $_SESSION['captcha']){
+            $this->message = '验证码错误';
+            return false;
+        }
+        
         if(!filter_var($data['email'],FILTER_VALIDATE_EMAIL)){
             $this->message = '邮箱格式错误';
             return false;

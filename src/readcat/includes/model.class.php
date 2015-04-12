@@ -63,7 +63,7 @@ class model{
         }
     }
     
-    function select($fields = '*', $_where = null, $order = null, $size = 0, $join = null) {
+    function where_clause($_where=null,$order=null,$size=0){
         $page = intval($_where['page']);
         
         $where = array();
@@ -85,7 +85,11 @@ class model{
 
         if ($order)
             $where['ORDER'] = $order;
-         
+        return $where;
+    }
+    
+    function select($fields = '*', $_where = null, $order = null, $size = 0, $join = null) {
+        $where = $this->where_clause($_where,$order,$size);
         if($join){
             return $this->db->select($this->table, $join, $fields, $where);
         }else{
@@ -97,7 +101,8 @@ class model{
         if(!$this->cache){
             return $this->select($fields,$_where,$order,$size,$join);
         }
-        $key = 'select'.$this->table.$this->pkey.$fields.serialize($_where).$order.$size;
+        $where = $this->where_clause($_where,$order,$size);
+        $key = 'select'.$this->table.$this->pkey.$fields.serialize($where);
         $rows = $this->cache->get($key);
         if(!$rows){
             $rows = $this->select($fields,$_where,$order,$size,$join);
@@ -108,7 +113,8 @@ class model{
     
     function delete_select_cache($fields = '*', $_where = null, $order = null, $size = 0, $join = null) {
         if($this->cache){
-            $key = 'select'.$this->table.$this->pkey.$fields.serialize($_where).$order.$size;
+            $where = $this->where_clause($_where,$order,$size);
+            $key = 'select'.$this->table.$this->pkey.$fields.serialize($where);
             $this->cache->delete($key);
         }
     }

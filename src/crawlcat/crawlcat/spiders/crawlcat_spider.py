@@ -133,7 +133,8 @@ class crawlcatSpider(CrawlSpider) :
             #如果规定在这里获得缩略图
             img_rule = self.url_sel_rules[_url]['img_rule']
             if img_rule:
-                src_attr = self.url_sel_rules[_url]['src_attr'] if self.url_sel_rules[_url]['src_attr'] else 'src'
+                #src_attr = self.url_sel_rules[_url]['src_attr'] if self.url_sel_rules[_url]['src_attr'] else 'src'
+                src_attr = 'src'
                 img_src = _sel.css('%s ::attr(%s)' % (img_rule, src_attr)).extract()
                 if len(img_src) > 0:
                     link[url]['image_urls'] = [img_src[0]]
@@ -195,9 +196,8 @@ class crawlcatSpider(CrawlSpider) :
         article['content'] = read.content
         
         #正文图片
-        if 'image_rules' not in article:
+        if 'image_urls' not in article:
             img = re.search('<img.*?src\s*=\s*[\'"](.*?)[\'"]',read.content.lower())
-            
             if img:
                 article['image_urls'] = [urlparse.urljoin(response.url,img.group(1))]
         return article

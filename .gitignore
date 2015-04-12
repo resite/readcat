@@ -4,3 +4,4 @@
 /src/crawlcat/crawlcat.sqlite
 /release/crawlcat/crawlcat.sqlite
 /release/crawlcat/userdict.txt
+*.pyc
