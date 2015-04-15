@@ -1713,7 +1713,7 @@ pre, code {
 
 .side .titlebox.submissioninfo .bottom {
     color: #444;
-    font-size: 10px;
+    font-size: 12px;
     padding: 0;
     margin: 0 0 20px;
 }
@@ -1793,7 +1793,7 @@ pre, code {
     border: 1px solid #999;
     color: #333;
     display: inline-block;
-    font-size: 10px;
+    font-size: 12px;
     height: 10px;
     line-height: 10px;
     margin: 1px 8px;
@@ -1864,7 +1864,7 @@ ul.content {
         color: #CCC;
         float: left;
         font-family: inherit;
-        font-size: 10px;
+        font-size: 12px;
         margin-top: 19px;
         min-width: 16px;
         text-align: center;
@@ -2011,7 +2011,7 @@ a.thumbnail:hover, a.thumbnail:focus, a.thumbnail.active {
 
 .linkflairlabel {
     display: inline-block;
-    font-size: 10px;
+    font-size: 12px;
     max-width: 100px;
 }
 
@@ -2035,7 +2035,7 @@ a.thumbnail:hover, a.thumbnail:focus, a.thumbnail.active {
     color: #FFF;
     display: inline-block;
     font-family: inherit;
-    font-size: 10px;
+    font-size: 12px;
     letter-spacing: 1px;
     line-height: 11px;
     margin-right: 3px;
@@ -2056,7 +2056,7 @@ a.thumbnail:hover, a.thumbnail:focus, a.thumbnail.active {
     color: #FFF;
     display: inline-block;
     font-family: inherit;
-    font-size: 10px;
+    font-size: 12px;
     letter-spacing: 1px;
     line-height: 11px;
     margin-right: 3px;
@@ -2727,7 +2727,6 @@ textarea.form-control {
 
 @media ( max-width: 950px ) {
     #sr-header-area {
-        font-size: 10px;
         height: 18px;
         line-height: 16px;
     }
@@ -2741,7 +2740,6 @@ textarea.form-control {
     }
 
     #header-account {
-        font-size: 10px;
         line-height: 20px;
         padding: 6px;
     }
@@ -3056,6 +3054,10 @@ textarea.form-control {
     .comment .flat-list.buttons li a:hover {
         text-decoration: none;
     }
+    
+    .entry{
+        overflow:initial;
+    }
 }
 
 @media ( max-width: 420px ) {
@@ -3093,4 +3095,7 @@ textarea.form-control {
     display:block;
     margin-left:40px;
     color:#333;
+}
+.usertext-body img{
+    max-width:450px;
 }

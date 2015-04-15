@@ -60,7 +60,7 @@
                                 <span class="userattrs"> by 
                                     <a href="#" class="author may-blank"><?php echo html::nickname($feed['user_id'])?></a>
                                 </span>
-                        <a href="javascript:void(0)" class="spread_btn pull-right" >展开</a>
+                        <a href="javascript:void(0)" class="spread_btn pull-right" >收起</a>
                     </p>
                     <p class="tagline">
                         <div class="bdsharebuttonbox" data-tag="view" data-feedid="<?php echo $feed['feed_id']?>" data-title="<?php echo $feed['title']?>" data-image="<?php echo $feed['top_image']?>">
@@ -76,26 +76,26 @@
                     <div class="expando">
 
                         <div class="usertext-body may-blank-within">
-                            <div class="md feed-content">
+                            <div class="md">
                             <?php echo $feed['content']?>
                             </div>
                         </div>
                     </div>
 
 
-<ul class="flat-list buttons">
-    <li class="first">
-        <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
-        <a href="#" class="comments may-blank"><?php echo html::comments_count($feed['feed_id'])?>个讨论</a>
-    </li>
-    <li>
-            <span class="glyphicon <?php echo feed::user_collect_feed($this->user_id,$v['feed_id'])?'glyphicon-heart':'glyphicon-heart-empty'?>" aria-hidden="true"></span>
-            <a href="javascript:void" onclick="<?php echo $this->user_id?'collect_link(this);':'mustLogin();';?>" data-feedid="<?php echo $v['feed_id']?>">私藏</a>
-    </li>
-    <li>
-        <a href="javascript:void(0)" class="spread_btn" >展开</a>
-    </li>
-</ul>
+                    <ul class="flat-list buttons">
+                        <li class="first">
+                            <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+                            <a href="#" class="comments may-blank"><?php echo html::comments_count($feed['feed_id'])?>个讨论</a>
+                        </li>
+                        <li>
+                                <span class="glyphicon <?php echo feed::user_collect_feed($this->user_id,$v['feed_id'])?'glyphicon-heart':'glyphicon-heart-empty'?>" aria-hidden="true"></span>
+                                <a href="javascript:void" onclick="<?php echo $this->user_id?'collect_link(this);':'mustLogin();';?>" data-feedid="<?php echo $v['feed_id']?>">私藏</a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)" class="spread_btn" >收起</a>
+                        </li>
+                    </ul>
                 </div>
                 <div class="child"></div>
                 <div class="clearleft">

@@ -27,7 +27,7 @@ class CrawlcatPipeline(object):
         self.sqlite_conn = sqlite3.connect('crawlcat.sqlite')
         self.sqlite_db = self.sqlite_conn.cursor()
         
-        self.sqlite_db.execute("DELETE FROM feeds WHERE add_time < '%s'" % (now-7*24*3600))
+        self.sqlite_db.execute("DELETE FROM feeds WHERE add_time < '%s'" % (now-90*24*3600))
         self.sqlite_conn.commit()
         
         self.mysql_conn = MySQLdb.connect(host='115.29.194.224',user='test_user',passwd='5VcDXxq9qWEfCXn4',db='readcat',port=3306,use_unicode=True,charset='utf8')

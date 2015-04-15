@@ -66,6 +66,14 @@ class Vrest{
         json_echo($res);
     }
     
+    function entry_app_feed_list(){
+        $feed_mod = model::load('feed');
+        $fields = array('feed_id','url','title','top_image','ups','downs','add_time','domain','user_id');
+        
+        $feed_list = $feed_mod->select_feeds($fields,$_GET);
+        include TEMPLATES_PATH.'app_feed_list.html';
+    }
+    
     /*
      * 上传图片
      */

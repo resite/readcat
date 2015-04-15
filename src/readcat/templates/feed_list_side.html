@@ -48,7 +48,7 @@
         <div>
 
         <?php foreach($top_feed_list as $v){?>
-        <span><?php echo $v['ups']?><a href="index.php?view=feed&entry=feed_view&feed_id=<?php echo $v['feed_id']?>" tabindex="1" title="<?php echo $v['title']?>"><?php echo $v['title']?></a></span>
+        <div class="top-points"><?php echo $v['ups']?></div><span class="top-title"><a href="index.php?view=feed&entry=feed_view&feed_id=<?php echo $v['feed_id']?>" tabindex="1" title="<?php echo $v['title']?>"><?php echo $v['title']?></a></span>
         <div class="tagline">&nbsp;</div>
         <?php }?>
 

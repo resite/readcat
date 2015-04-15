@@ -108,9 +108,9 @@
 
 
             <ul class="tabmenu">
-                <li class="<?php echo (!$_GET['order'] || $_GET['order']=='hot')?'selected':'disabled'?>"><a href="<?php echo html::query_string(array('order','page'))?>" title="帖子按最热排序">最热</a></li>
-                <li class="<?php echo ($_GET['order']=='new')?'selected':'disabled'?>"><a href="<?php echo html::query_string(array('order','page')),'&order=new'?>" title="帖子按最新排序">最新</a></li>
-                <li class="<?php echo ($_GET['order']=='controversy')?'selected':'disabled'?>"><a href="<?php echo html::query_string(array('order','page')),'&order=controversy'?>" title="帖子按争议性排序">最具争议</a></li>
+                <li class="<?php echo (!$_GET['order'] || $_GET['order']=='hot')?'selected':'disabled'?>"><a href="<?php echo html::query_string(array('feed_id','order','page'))?>" title="帖子按最热排序">最热</a></li>
+                <li class="<?php echo ($_GET['order']=='new')?'selected':'disabled'?>"><a href="<?php echo html::query_string(array('feed_id','order','page')),'&order=new'?>" title="帖子按最新排序">最新</a></li>
+                <li class="<?php echo ($_GET['order']=='controversy')?'selected':'disabled'?>"><a href="<?php echo html::query_string(array('feed_id','order','page')),'&order=controversy'?>" title="帖子按争议性排序">最具争议</a></li>
                 <li class="disabled"><a class="contribute" href="index.php?view=feed&entry=post">发布讨论</a></li>
                 <li class="disabled"><a class="contribute" href="index.php?view=feed&entry=post&linkpost=true">发布链接</a></li>
             </ul>

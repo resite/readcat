@@ -19,7 +19,7 @@ define('MEMCACHE_PORT','11211');
 define('ROOT_PATH',dirname(__FILE__).'/');
 define('INCLUDES_PATH',ROOT_PATH.'includes/');
 define('CONTENTS_PATH',ROOT_PATH.'contents/');
-define('CDN_URL','//7xiiv7.com1.z0.glb.clouddn.com');
+define('CDN_URL','');
 if(defined('ADMIN')){
     define('VIEW_PATH',ROOT_PATH.'admin/view/');
     define('TEMPLATES_PATH',ROOT_PATH.'admin/templates/');

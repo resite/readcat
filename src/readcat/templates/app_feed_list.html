@@ -1,0 +1,18 @@
+<?php foreach($feed_list as $k=>$v){ ?>
+<li>
+<div class="media id-<?php echo $v['feed_id']?>" data-id="<?php echo $v['feed_id']?>" data-href="<?php echo $v['url']?>">
+  <div class="media-body">
+    <h4 id="media-heading" class="media-heading"><a href="javascript:void(0)" onclick="open_view(<?php echo $v['feed_id']?>)"><?php echo $v['title']?></a><a class="anchorjs-link" href="#media-heading"><span class="anchorjs-icon"></span></a></h4>
+    <p class="text-muted"><?php echo html::date_relative($v['add_time'])?> (<?php echo $v['domain']?>)</p>
+    <button type="button" class="btn btn-default btn-xs btn-collect" data-id="<?php echo $v['feed_id']?>" onclick="collect(this)"><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span> 收藏</button>
+  </div>
+  <?php if($v['top_image']){ ?>
+  <div class="media-right">
+    <a href="javascript:void(0)" onclick="open_view(<?php echo $v['feed_id']?>)">
+      <img data-holder-rendered="true" src="<?php echo CDN_URL?>/contents/images/thumbs/small/<?php echo $v['top_image']?>" style="width: 100px;" class="media-object" alt="<?php echo $v['title']?>">
+    </a>
+  </div>
+  <?php }?>
+</div>
+</li>
+<?php } ?>
