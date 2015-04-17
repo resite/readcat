@@ -118,14 +118,16 @@ class feed extends model{
         }
         $data['content'] = trim($content);
         
-        if($data['url'] && !filter_var($data['url'],FILTER_SANITIZE_URL)){
-            $this->message = '网址错误';
-            return false;
-        }else{
-            $path = parse_url($data['url']);
-            $data['domain'] = $path['host'];
+        if($data['url']){
+            if(!filter_var($data['url'],FILTER_SANITIZE_URL)){
+                $this->message = '网址错误';
+                return false;
+            }else{
+                $path = parse_url($data['url']);
+                $data['domain'] = $path['host'];
+            }
         }
-        
+            
         if(!$data['node_keyword']){
             $this->message = '节点错误';
             return false;
