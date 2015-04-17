@@ -170,7 +170,7 @@ class feed extends model{
     }
     
     function select_feeds($fields,$where=null,$user_id=null,$relation_type=null){
-        $where['AND']['status[!]'] = self::FEED_STATUS_BLOCK;
+        $where['OR']['status'] = array(self::FEED_STATUS_ENABLE,self::FEED_STATUS_STICKY);
         $pos = array_search('add_time',$fields);
         if($pos !== false){
             $fields[$pos] = 'feeds.add_time';
