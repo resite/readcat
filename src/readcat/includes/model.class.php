@@ -79,7 +79,7 @@ class model{
             }
         }
         if(!empty($_where))
-            $where['AND'] = $where['AND']?array_merge($where['AND'],$_where):array('AND'=>$_where);
+            $where['AND'] = $where['AND']?array_merge($where['AND'],$_where):$_where;
             
         if(!$page) $page = 1;
         if(!$size) $size = SELECT_LIMIT;
