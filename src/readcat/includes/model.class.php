@@ -92,24 +92,24 @@ class model{
         return $where;
     }
     
-    function select($fields = '*', $_where = null, $order = null, $size = 0, $join = null) {
+    function select($fields = '*', $_where = null, $order = null, $size = 0, $join = null, $option = null) {
         $where = $this->where_clause($_where,$order,$size);
         if($join){
-            return $this->db->select($this->table, $join, $fields, $where);
+            return $this->db->select($this->table, $join, $fields, $where, $option);
         }else{
-            return $this->db->select($this->table, $fields, $where);
+            return $this->db->select($this->table, $fields, $where, null, $option);
         }
     }
     
-    function select_cache($fields = '*', $_where = null, $order = null, $size = 0 ,$join = null) {
+    function select_cache($fields = '*', $_where = null, $order = null, $size = 0 ,$join = null, $option = null) {
         if(!$this->cache){
-            return $this->select($fields,$_where,$order,$size,$join);
+            return $this->select($fields,$_where,$order,$size,$join,$option);
         }
         $where = $this->where_clause($_where,$order,$size);
         $key = 'select'.$this->table.$this->pkey.$fields.serialize($where);
         $rows = $this->cache->get($key);
         if(!$rows){
-            $rows = $this->select($fields,$_where,$order,$size,$join);
+            $rows = $this->select($fields,$_where,$order,$size,$join,$option);
             if($rows) $this->cache->set($key,$rows,0,300);
         }
         return $rows;
@@ -134,7 +134,7 @@ class model{
         
         $where = array('AND'=>$where,'ORDER'=>$this->pkey.' DESC');
         
-        $option = $lock ? 'for update' : '';
+        $option = $lock ? 'FOR UPDATE' : null;
         return $this->db->get($this->table,"*",$where,$option);
     }
     

@@ -593,7 +593,7 @@ class db
 			}
 		}
 
-		if (isset($column_fn))
+		if (isset($column_fn) && $column_fn && $column_fn != 'FOR UPDATE')
 		{
 			if ($column_fn == 1)
 			{
@@ -612,7 +612,10 @@ class db
 					$where = $join;
 				}
 
-				$column = $column_fn . '(' . $this->column_push($columns) . ')';
+                if($column_fn == 'DISTINCT')
+                    $column = $column_fn .' '. $this->column_push($columns);
+                else
+                    $column = $column_fn . '(' . $this->column_push($columns) . ')';
 			}
 		}
 		else
@@ -620,12 +623,15 @@ class db
 			$column = $this->column_push($columns);
 		}
 
-		return 'SELECT ' . $column . ' FROM ' . $table . $this->where_clause($where);
+        if($column_fn == 'FOR UPDATE')
+            return 'SELECT ' . $column . ' FROM ' . $table . $this->where_clause($where).' FOR UPDATE';
+        else
+            return 'SELECT ' . $column . ' FROM ' . $table . $this->where_clause($where);
 	}
 
 	public function select($table, $join, $columns = null, $where = null, $option = null)
 	{
-		$query = $this->query($this->select_context($table, $join, $columns, $where).' '.$option);
+        $query = $this->query($this->select_context($table, $join, $columns, $where, $option));
 
 		return $query ? $query->fetchAll(
 			(is_string($columns) && $columns != '*') ? PDO::FETCH_COLUMN : PDO::FETCH_ASSOC
@@ -790,7 +796,7 @@ class db
 		return $this->exec('UPDATE "' . $table . '" SET ' . $replace_query . $this->where_clause($where));
 	}
 
-	public function get($table, $columns, $where = null)
+	public function get($table, $columns, $where = null, $option = null)
 	{
 		if (!isset($where))
 		{
@@ -799,7 +805,7 @@ class db
 
 		$where['LIMIT'] = 1;
 
-		$data = $this->select($table, $columns, $where, $option);
+		$data = $this->select($table, $columns, $where, null, $option);
 
 		return isset($data[0]) ? $data[0] : false;
 	}

@@ -171,6 +171,10 @@ class feed extends model{
     
     function select_feeds($fields,$where=null,$user_id=null,$relation_type=null){
         $where['AND']['status'] = array(self::FEED_STATUS_ENABLE,self::FEED_STATUS_STICKY);
+        $pos = array_search('feed_id',$fields);
+        if($pos !== false){
+            $fields[$pos] = 'feeds.feed_id';
+        }
         $pos = array_search('add_time',$fields);
         if($pos !== false){
             $fields[$pos] = 'feeds.add_time';
@@ -196,11 +200,6 @@ class feed extends model{
         
         if($relation_type){
             //赞过 || 私藏
-            $pos = array_search('feed_id',$fields);
-            if($pos !== false){
-                $fields[$pos] = 'feeds.feed_id';
-            }
-            
             if($relation_type == 'like'){
                 $join = array('[<]votes'=>array('feed_id'=>'aim_id'));
                 $where['AND']['votes.vote_type'] = self::VOTE_TYPE_LIKE;
@@ -229,7 +228,7 @@ class feed extends model{
             $join = array('[<]node_feed_relation'=>'feed_id');
         }
         
-        $feed_list = $this->select_cache($fields,$where,$order,$size,$join);
+        $feed_list = $this->select_cache($fields,$where,$order,$size,$join,'DISTINCT');
         $this->init();
         return $feed_list;
     }

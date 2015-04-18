@@ -74,10 +74,10 @@ class crawlcatSpider(CrawlSpider) :
             self.allowed_domains.append(item[0])
         
         #初始化地址和规则
-        db.execute("SELECT url,rules,cate_id,img_rule,src_attr FROM website WHERE enabled = '1'")
+        db.execute("SELECT url,rules,cate_id,img_rule,src_attr,list_src_attr FROM website WHERE enabled = '1'")
         for item in db.fetchall():
             self.start_urls.append(item[0])
-            self.url_sel_rules[item[0]] = {'urles':eval(item[1]),'cate_id':item[2],'img_rule':item[3],'src_attr':item[4]}
+            self.url_sel_rules[item[0]] = {'urles':eval(item[1]),'cate_id':item[2],'img_rule':item[3],'src_attr':item[4],'list_src_attr':item[5]}
         
         #初始化已存网址
         db.execute("SELECT url,title FROM feeds");
@@ -120,12 +120,13 @@ class crawlcatSpider(CrawlSpider) :
                 self.rselect(sub_sel, rules, _url, key+1, link)
         else:
             #最后一个元素
-            title = sel.css(' ::attr(title)').extract()
-            if title and title[0]:
-                title = title[0]
-            else:
-                title = sel.css(' ::text').extract()
-                title = title[0]
+            title_title = sel.css(' ::attr(title)').extract()
+            title_title = title_title[0]
+            title_text = sel.css(' ::text').extract()
+            title_text = title_text[0]
+            
+            title = title_title if title_title and title_title[:8] == title_text[:8] else title_text
+            
             url = sel.css(' ::attr(href)').extract()
             url = url[0]
             link[url] = {'title':title.strip(),'url':url}
@@ -133,8 +134,7 @@ class crawlcatSpider(CrawlSpider) :
             #如果规定在这里获得缩略图
             img_rule = self.url_sel_rules[_url]['img_rule']
             if img_rule:
-                #src_attr = self.url_sel_rules[_url]['src_attr'] if self.url_sel_rules[_url]['src_attr'] else 'src'
-                src_attr = 'src'
+                src_attr = self.url_sel_rules[_url]['list_src_attr'] if self.url_sel_rules[_url]['list_src_attr'] else 'src'
                 img_src = _sel.css('%s ::attr(%s)' % (img_rule, src_attr)).extract()
                 if len(img_src) > 0:
                     link[url]['image_urls'] = [img_src[0]]
