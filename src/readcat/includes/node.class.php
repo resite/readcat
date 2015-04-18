@@ -35,7 +35,7 @@ class node extends model{
         default:
             $this->table = 'nodes';
             $this->pkey = 'node_id';
-            $this->fields = array('node_id'=>'','cate_id'=>'','keywords'=>'','alias_id'=>'');
+            $this->fields = array('node_id'=>'','cate_id'=>'','keywords'=>'','alias_id'=>'','type_id'=>'');
         }
     }
     

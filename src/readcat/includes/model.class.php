@@ -74,7 +74,7 @@ class model{
         if(is_array($_where)){
             $_where = array_intersect_key($_where,$this->fields);
             foreach($_where as $k=>$v){
-                if($v=='')
+                if($v==='')
                     unset($_where[$k]);
             }
         }
