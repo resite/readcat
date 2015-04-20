@@ -22,7 +22,7 @@
             <div class="form-group">
                 <label for="content">内容</label>
                 <div>
-                  <p class="form-control-static"><?php echo $feed['content']?></p>
+                  <textarea class="form-control" rows="3"><?php echo $feed['content']?></textarea>
                 </div>
             </div>
             <div class="form-group">
@@ -35,6 +35,12 @@
                 <label for="nickname">URL</label>
                 <div>
                   <p class="form-control-static"><?php echo $feed['url']?></p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="top_image">缩略图</label>
+                <div>
+                  <input type="text" class="form-control" id="top_image" name="top_image" value="<?php echo $feed['top_image']?>" />
                 </div>
             </div>
             <div class="form-group">

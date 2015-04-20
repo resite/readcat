@@ -58,7 +58,7 @@ class feed extends model{
         default:
             $this->table = 'feeds';
             $this->pkey = 'feed_id';
-            $this->fields = array('feed_id'=>'','user_id'=>'','cate_id'=>'','url'=>'','title'=>'','content'=>'','add_time'=>'','top_image'=>'','ups'=>'','downs'=>'','hot_score'=>'','controversy_score'=>'','status'=>'');
+            $this->fields = array('feed_id'=>'','user_id'=>'','domain'=>'','cate_id'=>'','url'=>'','title'=>'','content'=>'','add_time'=>'','top_image'=>'','ups'=>'','downs'=>'','hot_score'=>'','controversy_score'=>'','status'=>'');
             break;
         }
     }
@@ -117,16 +117,6 @@ class feed extends model{
             return false;
         }
         $data['content'] = trim($content);
-        
-        if($data['url']){
-            if(!filter_var($data['url'],FILTER_SANITIZE_URL)){
-                $this->message = '网址错误';
-                return false;
-            }else{
-                $path = parse_url($data['url']);
-                $data['domain'] = $path['host'];
-            }
-        }
             
         if(!$data['node_keyword']){
             $this->message = '节点错误';
@@ -137,6 +127,15 @@ class feed extends model{
         if(!$node){
             $this->message = '节点错误';
             return false;
+        }
+        
+        if($data['url']){
+            if(!filter_var($data['url'],FILTER_SANITIZE_URL)){
+                $this->message = '网址错误';
+                return false;
+            }
+            $path = parse_url($data['url']);
+            $data['domain'] = $path['host'];
         }else{
             $data['domain'] = $node['keywords'];
         }
