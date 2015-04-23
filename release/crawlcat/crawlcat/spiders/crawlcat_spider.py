@@ -121,9 +121,11 @@ class crawlcatSpider(CrawlSpider) :
         else:
             #最后一个元素
             title_title = sel.css(' ::attr(title)').extract()
-            title_title = title_title[0]
+            if title_title:
+                title_title = title_title[0]
             title_text = sel.css(' ::text').extract()
-            title_text = title_text[0]
+            if title_text:
+                title_text = title_text[0]
             
             title = title_title if title_title and title_title[:8] == title_text[:8] else title_text
             
