@@ -839,7 +839,7 @@ function unsubscribe(obj, subverseName) {
     // call the subverse unsubscribe API
     $.ajax({
         type: "POST",
-        url: "/index.php?view=node&entry=unsubscribe+node_id=" + subverseName,
+        url: "/index.php?view=node&entry=unsubscribe&node_id=" + subverseName,
         success: function () {
             var numberOfSubscribers = +($('#subscriberCount').html());
             numberOfSubscribers--;

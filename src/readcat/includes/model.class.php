@@ -158,14 +158,14 @@ class model{
         }
     }
     
-    function delete($where){
-        if(is_array($where))
-            $where = array_intersect_key($where,$this->fields);
-            
+    function delete($where,$limit=1){
+        $where = $this->where_clause($where);
         if(empty($where)) return false;
         
         if(!is_array($where))
             $where = array($this->pkey=>$where);
+        
+        $where['LIMIT'] = $limit;
         
         return $this->db->delete($this->table,$where);
     }

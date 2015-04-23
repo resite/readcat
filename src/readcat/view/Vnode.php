@@ -22,16 +22,26 @@ class Vnode extends View{
     }
     
     function entry_subscribe(){
+        $node_id = intval($_REQUEST['node_id']);
+        if($node_id <= 0)
+            return;
+        
         $node_mod = model::load('node');
         $node_mod->init('user_node_relation');
-        $res = $node_mod->insert(array('node_id'=>$_REQUEST['node_id'],'user_id'=>$this->user_id,'add_time'=>$_SERVER['REQUEST_TIME']));
+        $res = $node_mod->insert(array('node_id'=>$node_id,'user_id'=>$this->user_id,'add_time'=>$_SERVER['REQUEST_TIME']));
+        $node_mod->delete_select_cache(array('node_id'),array('user_id'=>$this->user_id),null,5000);
         echo $res;
     }
     
     function entry_unsubscribe(){
+        $node_id = intval($_REQUEST['node_id']);
+        if($node_id <= 0)
+            return;
+        
         $node_mod = model::load('node');
         $node_mod->init('user_node_relation');
-        $res = $node_mod->delete(array('node_id'=>$_REQUEST['node_id'],'user_id'=>$this->user_id,'add_time'=>$_SERVER['REQUEST_TIME']));
+        $res = $node_mod->delete(array('node_id'=>$node_id,'user_id'=>$this->user_id));
+        $node_mod->delete_select_cache(array('node_id'),array('user_id'=>$this->user_id),null,5000);
         echo $res;
     }
 }
