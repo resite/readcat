@@ -27,6 +27,8 @@ class crawlcatSpider(CrawlSpider) :
     #本地已存网址库
     stored_title_list = []
     #已存储的标题库
+    special_keywords_list = []
+    #分词失败的关键词
 
     name = 'crawlcat'
     allowed_domains = []
@@ -48,15 +50,19 @@ class crawlcatSpider(CrawlSpider) :
 
         keywords = num_keywords[:]
         
-        db.execute('SELECT node_id,keywords,alias_id,type_id,cate_id FROM nodes WHERE type_id < 2')
+        db.execute('SELECT node_id,keywords,alias_id,type_id,cate_id FROM nodes WHERE type_id != 2')
         for item in db.fetchall():
             if item[3] == 0:
-                #搜索词
+                #搜索词，加入分词词库
                 self.keywords_dict[item[1]] = item[0] if item[2] == 0 else item[2]
                 keywords.append(item[1])
-            else:
+            elif item[3] == 1:
                 #精选词
                 self.select_keywords_dict[item[4]] = item[0]
+            elif item[3] == 3:
+                #分词失败的关键词
+                self.keywords_dict[item[1]] = item[0] if item[2] == 0 else item[2]
+                self.special_keywords_list.append(item[1])
 
         self.keywords_set = set(self.keywords_dict)
         self.select_keywords_set = set(num_keywords)
@@ -139,7 +145,7 @@ class crawlcatSpider(CrawlSpider) :
                 src_attr = self.url_sel_rules[_url]['list_src_attr'] if self.url_sel_rules[_url]['list_src_attr'] else 'src'
                 img_src = _sel.css('%s ::attr(%s)' % (img_rule, src_attr)).extract()
                 if len(img_src) > 0:
-                    link[url]['image_urls'] = [img_src[0]]
+                    link[url]['image_urls'] = [urlparse.urljoin(_url,img_src[0])]
 
 
     #匹配标题和关键词
@@ -148,6 +154,7 @@ class crawlcatSpider(CrawlSpider) :
     def mate_title_keywords(self, link, cate_id):
         for url in link.keys():
             title = link[url]['title']
+            title_lower = title.lower()
             
             #去重复
             if title[:8] in self.stored_title_list:
@@ -156,10 +163,15 @@ class crawlcatSpider(CrawlSpider) :
             else:
                 self.stored_title_list.append(title[:8])
                 
-            seg_set = set(jieba.cut_for_search(title.lower()))
+            seg_set = set(jieba.cut_for_search(title_lower))
             keywords_set = self.keywords_set & seg_set
             select_keywords_set = self.select_keywords_set & seg_set
-            if not keywords_set and not select_keywords_set:
+            special_keywords_list = []
+            for keyword in self.special_keywords_list:
+                if keyword in title_lower:
+                    special_keywords_list.append(keyword)
+            
+            if not keywords_set and not select_keywords_set and not special_keywords_list:
                 link.pop(url)
             else:
                 #link_dict = {'url':url,'title':title,'node_ids':[]}
@@ -168,9 +180,15 @@ class crawlcatSpider(CrawlSpider) :
                 
                 if select_keywords_set:
                     link_dict['node_ids'].append(self.select_keywords_dict[cate_id])
+                    
                 if keywords_set:
                     link_dict['keywords'] = list(keywords_set)
                     for keyword in keywords_set:
+                        link_dict['node_ids'].append(self.keywords_dict[keyword])
+                        
+                if special_keywords_list:
+                    link_dict['keywords'] = special_keywords_list
+                    for keyword in special_keywords_list:
                         link_dict['node_ids'].append(self.keywords_dict[keyword])
                     
                 #link[url] = link_dict

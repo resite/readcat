@@ -40,7 +40,7 @@ class Readability:
         'trim': re.compile("^\s+|\s+$",re.I),
         'normalize': re.compile("\s{2,}",re.I),
         'killBreaks': re.compile("(<br\s*/?>(\s|&nbsp;?)*)+",re.I),
-        'videos': re.compile("http://(www\.)?(youtube|vimeo)\.com",re.I),
+        'videos': re.compile("http://(www\.)?(youtube|vimeo|static\.video\.qq|player\.youku|static\.youku|tudou|share\.vrs\.sohu)\.com",re.I),
         'skipFootnoteLink': re.compile("^\s*(\[?[a-z0-9]{1,2}\]?|^|edit|citation needed)\s*$",re.I),
         'nextLink': re.compile("(next|weiter|continue|>([^\|]|$)|»([^\|]|$))",re.I),
         'prevLink': re.compile("(prev|earl|old|new|<|«)",re.I)

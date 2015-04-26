@@ -54,7 +54,7 @@ logger = logging.getLogger("breadability")
 
 def ok_embedded_video(node):
     """Check if this embed/video is an ok one to count."""
-    good_keywords = ('youtube', 'blip.tv', 'vimeo')
+    good_keywords = ('youtube', 'blip.tv', 'vimeo', 'video.qq','player.youku','static.youku','tudou','share.vrs.sohu')
 
     node_str = tounicode(node)
     for key in good_keywords:
