@@ -35,13 +35,13 @@ class node extends model{
         default:
             $this->table = 'nodes';
             $this->pkey = 'node_id';
-            $this->fields = array('node_id'=>'','cate_id'=>'','keywords'=>'','alias_id'=>'','type_id'=>'');
+            $this->fields = array('node_id'=>'','cate_id'=>'','node_name'=>'','keywords'=>'','alias_id'=>'','type_id'=>'');
         }
     }
     
     function select_nodes($fields, $where = null, $user_id=null, $size=null){
         if($where['q']){
-            $where['LIKE']['keywords%[~]']=$where['q'];
+            $where['LIKE']['keywords%[~]']=strtolower($where['q']);
         }
         if($user_id){
             $join = array('[<]user_node_relation'=>'node_id');
@@ -82,7 +82,7 @@ class node extends model{
     
     static function top_node_list(){
         $node_mod = model::load('node');
-        $fields = array('node_id','keywords');
+        $fields = array('node_id','node_name');
         $where = array('alias_id'=>0);
         return $node_mod->select_cache($fields,$where,'node_id DESC','20');
     }

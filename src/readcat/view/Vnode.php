@@ -6,7 +6,7 @@ class Vnode extends View{
     
     function entry_node_list(){
         $node_mod = model::load('node');
-        $fields = array('node_id','keywords');
+        $fields = array('node_id','node_name');
         if($_GET['my']){
             $node_list = $node_mod->select_nodes($fields,$_GET,$this->user_id,14);
         }else{

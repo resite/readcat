@@ -85,7 +85,7 @@
             <?php foreach(node::top_node_list() as $v){ ?>
                 <li class="">
                     <span class="separator">-</span>
-                    <a href="index.php?view=feed&node_id=<?php echo $v['node_id']?>" title="<?php echo $v['keywords']?>"><?php echo $v['keywords'];?></a>
+                    <a href="index.php?view=feed&node_id=<?php echo $v['node_id']?>" title="<?php echo $v['node_name']?>"><?php echo $v['node_name'];?></a>
                 </li>
             <?php } ?>
             </ul>
