@@ -49,7 +49,7 @@ class Vfeed extends View{
             $this->assign['indirect_node_list'] = $node_mod->select_indirect_nodes($_GET['node_id']);
         }
         
-        $this->assign['sys_config']['website_title'] = $node['keywords'].' - '.$this->assign['sys_config']['website_name'];
+        $this->assign['sys_config']['website_title'] = $node['node_name'].' - '.$this->assign['sys_config']['website_name'];
         $this->display('feed_list');
     }
     

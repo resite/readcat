@@ -6,14 +6,16 @@ class Vnode extends View{
     
     function entry_node_list(){
         $node_mod = model::load('node');
-        $fields = array('node_id','node_name');
+        $fields = array('node_id','alias_id','node_name');
         if($_GET['my']){
             $node_list = $node_mod->select_nodes($fields,$_GET,$this->user_id,14);
         }else{
             $node_list = $node_mod->select_nodes($fields,$_GET,null,14);
         }
         $this->assign['node_list'] =$node_list;
-        $this->show_page(SELECT_LIMIT*100);
+        if(count($node_list) == SELECT_LIMIT){
+            $this->show_page(SELECT_LIMIT*100);
+        }
         
         $node_mod->init('cate');
         $fields = array('cate_id','cate_name');

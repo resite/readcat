@@ -63,7 +63,7 @@ class node extends model{
         }
         
         //$this->init();
-        $fields = array('nodes.node_id','keywords');
+        $fields = array('nodes.node_id','nodes.alias_id','node_name');
         $where = array('AND'=>array('user_node_relation.user_id'=>$user_ids,'user_node_relation.node_id[!]'=>$node_id));
         $join = array('[>]nodes'=>'node_id');
         return $this->select_cache($fields,$where,'nodes.node_id DESC',10,$join);
