@@ -3,9 +3,10 @@ class node extends model{
     const NODE_TYPE_SEARCH = 0;
     const NODE_TYPE_SELECT = 1;
     const NODE_TYPE_USER = 2;
+    const NODE_TYPE_SPECIAL = 3;
     
     static function node_type($id=null){
-        $type = array(self::NOTE_TYPE_SEARCH => 'ËÑË÷', self::NODE_TYPE_SELECT=>'¾«Ñ¡', self::NODE_TYPE_USER=>'ÆÕÍ¨');
+        $type = array(self::NOTE_TYPE_SEARCH => 'æœç´¢', self::NODE_TYPE_SELECT=>'ç²¾é€‰', self::NODE_TYPE_USER=>'æ™®é€š');
         if ($id == null) {
             return $type;
         } else {
@@ -35,7 +36,7 @@ class node extends model{
         default:
             $this->table = 'nodes';
             $this->pkey = 'node_id';
-            $this->fields = array('node_id'=>'','cate_id'=>'','node_name'=>'','keywords'=>'','alias_id'=>'','type_id'=>'');
+            $this->fields = array('node_id'=>'','cate_id'=>'','node_name'=>'','keywords'=>'','alias_id'=>'','type_id'=>'','user_id'=>'','add_time'=>'');
         }
     }
     
@@ -67,6 +68,49 @@ class node extends model{
         $where = array('AND'=>array('user_node_relation.user_id'=>$user_ids,'user_node_relation.node_id[!]'=>$node_id));
         $join = array('[>]nodes'=>'node_id');
         return $this->select_cache($fields,$where,'nodes.node_id DESC',10,$join);
+    }
+    
+    function add_node($data,$user_id){
+        if(strtolower($data['captcha']) != $_SESSION['captcha']){
+            $this->message = 'éªŒè¯ç é”™è¯¯';
+            return false;
+        }
+        
+        $cate_id = intval($data['cate_id']);
+        if($cate_id < 1){
+            $this->message = 'åˆ†ç±»é”™è¯¯';
+            return false;
+        }
+        $data['cate_id'] = $cate_id;
+        
+        $node_name = trim($data['node_name']);
+        $name_len = mb_strlen($node_name);
+        if($name_len < 1 || $name_len > 20 || baddet::detect($node_name)){
+            $this->message = 'èŠ‚ç‚¹é”™è¯¯';
+            return false;
+        }
+        
+        $node = $this->get_cache(array('node_name'=>$node_name));
+        if($node){
+            $this->message = 'èŠ‚ç‚¹é”™è¯¯';
+            return false;
+        }
+        $data['node_name'] = $node_name;
+        $data['keywords'] = strtolower($node_name);
+        $data['add_time'] = $_SERVER['REQUEST_TIME'];
+        $data['user_id'] = $user_id;
+        $data['type_id'] = self::NODE_TYPE_USER;
+        
+        $this->begin();
+        try{
+            $node_id = $this->insert($data);
+            $this->commit();
+            return $node_id;
+        }catch(Exception $e){
+            $this->message = 'å¤±è´¥';
+            $this->rollBack();
+            return false;
+        }
     }
     
     static function top_cate_list(){
@@ -103,7 +147,7 @@ class node extends model{
             $node_mod->init();
         }
         
-        //ÒÑ¾­ËÑË÷¹ı£¬Êı¾İÎª¿Õ
+        //å·²ç»æœç´¢è¿‡ï¼Œæ•°æ®ä¸ºç©º
         if($relation == 1) return;
         
         if($node_id)

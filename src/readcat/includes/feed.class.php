@@ -116,7 +116,14 @@ class feed extends model{
             $this->message = '验证码错误';
             return false;
         }
-        $data['content'] = trim($content);
+        $data['content'] = trim($data['content']);
+        $title = trim($data['title']);
+        $title_len = mb_strlen($title);
+        if($title_len < 3 || $title_len > 255 || baddet::detect($title)){
+            $this->message = '标题错误';
+            return false;
+        }
+        $data['title'] = $title;
             
         if(!$data['node_keyword']){
             $this->message = '节点错误';
@@ -136,6 +143,15 @@ class feed extends model{
             }
             $path = parse_url($data['url']);
             $data['domain'] = $path['host'];
+            
+            $temp_arr = explode(".", $data['url']);
+            $file_ext = array_pop($temp_arr);
+            $file_ext = trim($file_ext);
+            $file_ext = strtolower($file_ext);
+            $ext_arr = array('gif', 'jpg', 'jpeg', 'png', 'bmp');
+            if(in_array($file_ext,$ext_arr) && !$data['top_image']){
+                $data['top_image'] = $data['url'];
+            }
         }else{
             $data['domain'] = $node['keywords'];
         }
@@ -147,7 +163,7 @@ class feed extends model{
         $data['downs'] = 0;
         $data['hot_score'] = sorts::hot_score(0,0,$add_time);
         $data['controversy_score'] = 0;
-        $data['status'] = self::FEED_STATUS_WAITING;
+        $data['status'] = self::FEED_STATUS_ENABLE;
         $data['user_id'] = $user_id;
         
         $this->begin();
@@ -160,7 +176,7 @@ class feed extends model{
         
             $this->init();
             $this->commit();
-            return true;
+            return $feed_id;
         }catch(Exception $e){
             $this->message = '失败';
             $this->rollBack();

@@ -46,7 +46,10 @@ class Vfeed extends View{
         $this->assign['top_feed_list'] = $feed_mod->select_feeds($fields,$where);
         
         if($_GET['node_id']){
-            $this->assign['indirect_node_list'] = $node_mod->select_indirect_nodes($_GET['node_id']);
+            //$this->assign['indirect_node_list'] = $node_mod->select_indirect_nodes($_GET['node_id']);
+            $fields = array('nodes.node_id','nodes.alias_id','node_name');
+            $where = array('type_id'=>node::NODE_TYPE_SELECT);
+            $this->assign['indirect_node_list'] = $node_mod->select_cache($fields,$where,'nodes.node_id DESC',10);
         }
         
         $this->assign['sys_config']['website_title'] = $node['node_name'].' - '.$this->assign['sys_config']['website_name'];
@@ -83,9 +86,9 @@ class Vfeed extends View{
     function entry_post(){
         if(is_post()){
             $feed_mod = model::load('feed');
-            if($feed_mod->add_feed($_POST,$this->user_id)){
-                $this->assign['message'] = '内容已经提交，正在等待审核，在此期间您可以到处看看';
-                $this->display('message');
+            $feed_id = $feed_mod->add_feed($_POST,$this->user_id);
+            if($feed_id){
+                header('Location: /index.php?view=feed&entry=feed_view&feed_id='.$feed_id);
             }else{
                 $this->assign['message'] = $feed_mod->message;
                 $this->display('message');
