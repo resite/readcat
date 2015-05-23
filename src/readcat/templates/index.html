@@ -7,7 +7,22 @@
 
         <div class="sitetable">
             
+<?php if(!$_GET['page'] || $_GET['page']==1){?>
+<div class="alert-featuredsub">
+        <div class="submission link stickied">
+            <div class="entry unvoted">
+                <p class="title">
+                    <span class="featuredsub">推荐节点</span>
+                    <a class="title may-blank" href="/index.php?view=feed&node_id=402" tabindex="1" title="孤独心跳">孤独心跳</a>
+                </p>
 
+                <p class="tagline">
+                    分享你的Apple Watch 心跳
+                </p>
+            </div>
+        </div>
+    </div>
+<?php }?>
 <?php foreach($feed_list as $k=>$v){ ?>
 <div class="submission id-<?php echo $v['feed_id']?> <?php echo is_even($k)?'even':'odd'?> link self" data-fullname="<?php echo $v['feed_id']?>" data-ups="1" data-downs="">
     <p class="parent"></p>
